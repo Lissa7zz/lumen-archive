@@ -41,7 +41,7 @@ app.innerHTML = `
 
     <main>
       <section class="archive-hero">
-        <div class="archive-hero__index" aria-hidden="true">55</div>
+        <div class="archive-hero__index" aria-hidden="true">110</div>
         <div class="archive-hero__copy">
           <p class="eyebrow">Complete Collection / 完整典藏</p>
           <h1>五百年视觉档案</h1>
@@ -51,9 +51,9 @@ app.innerHTML = `
           </p>
         </div>
         <dl class="archive-stats">
-          <div><dt>作品</dt><dd data-total-count>55</dd></div>
-          <div><dt>年代跨度</dt><dd>550 年</dd></div>
-          <div><dt>数据分块</dt><dd data-chunk-count>06</dd></div>
+          <div><dt>作品</dt><dd data-total-count>110</dd></div>
+          <div><dt>年代跨度</dt><dd><span data-year-span>563</span> 年</dd></div>
+          <div><dt>数据分块</dt><dd data-chunk-count>11</dd></div>
         </dl>
       </section>
 
@@ -237,6 +237,7 @@ async function loadCatalog() {
   document.querySelector("[data-total-count]").textContent = manifest.total;
   document.querySelector("[data-chunk-count]").textContent =
     String(manifest.chunks.length).padStart(2, "0");
+  document.querySelector("[data-year-span]").textContent = manifest.yearSpan;
 
   status.hidden = true;
   grid.hidden = false;

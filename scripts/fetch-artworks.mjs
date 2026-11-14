@@ -26,6 +26,10 @@ async function download(work) {
   const sourceUrl =
     `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodedTitle}` +
     "?width=3600";
+  const thumbnailUrl =
+    "https://commons.wikimedia.org/w/thumb.php?f=" +
+    encodeURIComponent(work.sourceFile.replaceAll(" ", "_")) +
+    "&w=3600";
   let response;
   for (let attempt = 1; attempt <= 3; attempt += 1) {
     try {
@@ -34,10 +38,26 @@ async function download(work) {
         headers: { "User-Agent": userAgent }
       });
       if (response.ok) break;
+      if (response.status === 429) break;
     } catch {
       response = null;
     }
     await new Promise((resolve) => setTimeout(resolve, attempt * 1200));
+  }
+
+  if (!response?.ok) {
+    for (let attempt = 1; attempt <= 3; attempt += 1) {
+      try {
+        response = await fetch(thumbnailUrl, {
+          redirect: "follow",
+          headers: { "User-Agent": userAgent }
+        });
+        if (response.ok) break;
+      } catch {
+        response = null;
+      }
+      await new Promise((resolve) => setTimeout(resolve, attempt * 1200));
+    }
   }
 
   if (!response?.ok) {

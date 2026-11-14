@@ -82,6 +82,7 @@ sortedWorks.forEach((work, index) => {
 const manifest = {
   total: sortedWorks.length,
   curatorial: curatedWorks.length,
+  yearSpan: sortedWorks.at(-1).year - sortedWorks[0].year,
   pageSize,
   chunkSize,
   chunks

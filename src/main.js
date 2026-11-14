@@ -114,11 +114,11 @@ app.innerHTML = `
           </div>
           <div class="section-heading__aside">
             <p class="section-heading__intro">
-              绘画把想象凝固，摄影把现实留下。本期精选 12 件，完整档案已扩充至 55 件。
+              绘画把想象凝固，摄影把现实留下。本期精选 12 件，完整档案已扩充至 110 件。
             </p>
             <a class="archive-entry" href="archive.html">
               <span>查看完整典藏</span>
-              <strong>55 件作品</strong>
+              <strong>110 件作品</strong>
               <i data-lucide="arrow-right" aria-hidden="true"></i>
             </a>
           </div>
@@ -915,7 +915,7 @@ function updateSearchResults(query) {
       class="search-results__archive"
       href="archive.html${query ? `?q=${encodeURIComponent(query)}` : ""}"
     >
-      <span>${query ? `在完整典藏中搜索“${query}”` : "浏览完整典藏 · 55 件作品"}</span>
+        <span>${query ? `在完整典藏中搜索“${query}”` : "浏览完整典藏 · 110 件作品"}</span>
       <i data-lucide="arrow-right" aria-hidden="true"></i>
     </a>
   `;

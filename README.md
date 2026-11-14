@@ -8,7 +8,7 @@
 # Lumen Archive
 
 Lumen Archive is an open-source, cross-media timeline of paintings, prints, and
-photography. The current catalogue brings together 55 works from 1434 to 1984,
+photography. The current catalogue brings together 110 works from 1434 to 1997,
 with local high-resolution images, source information, and a viewer designed
 for close inspection.
 
@@ -17,11 +17,11 @@ image-processing service.
 
 ## Highlights
 
-- 55 paintings, prints, and photographs, with a 12-work homepage selection
+- 110 paintings, prints, and photographs, with a 12-work homepage selection
 - Chronological exhibition wall and horizontal timeline
 - Search by title, artist, year, medium, or origin
 - Traditional catalogue with sorting, pagination, and deep-linkable page state
-- Six catalogue data chunks and a separate, lazily loaded search index
+- Chunked catalogue data and a separate, lazily loaded search index
 - 480 px thumbnails, 1600 px previews, and 3200 px viewing assets
 - Zoom with the mouse wheel, buttons, double-click, or a touch pinch gesture
 - Drag to pan when enlarged, with touch swipe navigation at fit scale
@@ -47,13 +47,13 @@ horizontally at fit scale to change works.
 ## Catalogue
 
 The complete catalogue is available at `/archive.html`. It loads artwork
-metadata in six JSON chunks, reads a separate search index on demand, and
+metadata in eleven JSON chunks, reads a separate search index on demand, and
 shows 12 works per page. Sort order, search text, and page number are preserved
 in the URL for reloading or sharing.
 
 ## Scaling path
 
-The static chunk architecture is appropriate for the current 55-work
+The static chunk architecture is appropriate for the current 110-work
 collection and can be extended to several hundred works. At the scale of
 thousands, image files should move to object storage behind a CDN, catalogue
 metadata should be served through a lightweight API or database, and search
@@ -110,8 +110,9 @@ does not apply to the reproduced artworks.
 
 Most images in this collection are in the public domain. *The Second Sunset of
 the Day* is used under CC BY 2.0. The photograph of *The School of Athens* is
-used under CC BY-SA 4.0. Both require attribution and their respective license
-terms. Source pages, licenses, and attribution strings are listed in
+used under CC BY-SA 4.0. The Sputnik photograph is dedicated to the public
+domain under CC0. These images require the attribution recorded for each work.
+Source pages, licenses, and attribution strings are listed in
 [ATTRIBUTION.md](ATTRIBUTION.md); additional third-party notices are in
 [NOTICE.md](NOTICE.md).
 

@@ -1,6 +1,7 @@
 {
-  "total": 55,
+  "total": 110,
   "curatorial": 12,
+  "yearSpan": 563,
   "pageSize": 12,
   "chunkSize": 10,
   "chunks": [
@@ -20,25 +21,55 @@
       "file": "data/chunks/works-003.json",
       "count": 10,
       "firstYear": 1823,
-      "lastYear": 1863
+      "lastYear": 1850
     },
     {
       "file": "data/chunks/works-004.json",
       "count": 10,
-      "firstYear": 1872,
-      "lastYear": 1888
+      "firstYear": 1853,
+      "lastYear": 1873
     },
     {
       "file": "data/chunks/works-005.json",
       "count": 10,
-      "firstYear": 1888,
-      "lastYear": 1913
+      "firstYear": 1874,
+      "lastYear": 1888
     },
     {
       "file": "data/chunks/works-006.json",
-      "count": 5,
-      "firstYear": 1915,
-      "lastYear": 1984
+      "count": 10,
+      "firstYear": 1889,
+      "lastYear": 1907
+    },
+    {
+      "file": "data/chunks/works-007.json",
+      "count": 10,
+      "firstYear": 1907,
+      "lastYear": 1933
+    },
+    {
+      "file": "data/chunks/works-008.json",
+      "count": 10,
+      "firstYear": 1936,
+      "lastYear": 1945
+    },
+    {
+      "file": "data/chunks/works-009.json",
+      "count": 10,
+      "firstYear": 1945,
+      "lastYear": 1961
+    },
+    {
+      "file": "data/chunks/works-010.json",
+      "count": 10,
+      "firstYear": 1962,
+      "lastYear": 1969
+    },
+    {
+      "file": "data/chunks/works-011.json",
+      "count": 10,
+      "firstYear": 1972,
+      "lastYear": 1997
     }
   ]
 }

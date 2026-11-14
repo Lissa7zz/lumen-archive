@@ -1156,7 +1156,854 @@ const additionalArtworks = [
   })
 ];
 
-export const artworks = [...coreArtworks, ...additionalArtworks];
+function makePhoto(data) {
+  return makeWork({
+    medium: "摄影",
+    mediumDetail: "银盐或数字摄影",
+    dimensions: "数字档案",
+    license: "Public domain",
+    ...data
+  });
+}
+
+const photoArtworks = [
+  makePhoto({
+    id: "view-from-window",
+    titleZh: "勒格拉窗外的景色",
+    titleEn: "View from the Window at Le Gras",
+    artist: "约瑟夫·尼塞福尔·涅普斯",
+    artistEn: "Joseph Nicéphore Niépce",
+    year: 1826,
+    displayDate: "约 1826–1827 年",
+    mediumDetail: "沥青感光版",
+    origin: "法国",
+    collection: "哈里·兰塞姆中心",
+    sourceFile: "Untitled (point de vue), Niépce 1827 — HRC 2020 (cropped).jpg",
+    description:
+      "涅普斯从工作室窗口拍下建筑与树影，曝光可能持续了数小时。这张模糊而珍贵的影像，被普遍视为摄影术最早存世的作品之一。"
+  }),
+  makePhoto({
+    id: "boulevard-du-temple",
+    titleZh: "圣殿大道",
+    titleEn: "Boulevard du Temple",
+    artist: "路易·达盖尔",
+    artistEn: "Louis Daguerre",
+    year: 1838,
+    displayDate: "1838 年",
+    mediumDetail: "银版摄影",
+    origin: "法国",
+    collection: "巴伐利亚国立博物馆",
+    sourceFile: "Boulevard du Temple by Daguerre.jpg",
+    description:
+      "巴黎繁忙大道因长时间曝光显得空旷，只有一名停留擦鞋的男子留下了身影。这通常被视为最早拍到人物的照片之一。"
+  }),
+  makePhoto({
+    id: "the-open-door",
+    titleZh: "敞开的门",
+    titleEn: "The Open Door",
+    artist: "威廉·亨利·福克斯·塔尔博特",
+    artistEn: "William Henry Fox Talbot",
+    year: 1844,
+    displayDate: "1844 年",
+    mediumDetail: "盐纸照片",
+    origin: "英国",
+    collection: "法国国家图书馆",
+    sourceFile: "The open door - btv1b10023869v (1 of 2).jpg",
+    description:
+      "塔尔博特把一盏灯、一把扫帚和半开的木门拍成安静的光影练习。日常物件在这里成为摄影从记录转向观看的早期例证。"
+  }),
+  makePhoto({
+    id: "cornelius-self-portrait",
+    titleZh: "罗伯特·科尼利厄斯自拍",
+    titleEn: "Robert Cornelius Self-Portrait",
+    artist: "罗伯特·科尼利厄斯",
+    artistEn: "Robert Cornelius",
+    year: 1839,
+    displayDate: "1839 年",
+    mediumDetail: "银版摄影",
+    origin: "美国",
+    collection: "美国国会图书馆",
+    sourceFile: "1839 Self-portrait by Robert Cornelius.jpg",
+    description:
+      "科尼利厄斯在费城的店铺前架好相机，自己走进画面停留片刻。这张照片被认为是美国最早的人像摄影之一，也是早期的自拍实践。"
+  }),
+  makePhoto({
+    id: "lincoln-gardner",
+    titleZh: "亚伯拉罕·林肯",
+    titleEn: "Abraham Lincoln",
+    artist: "亚历山大·加德纳",
+    artistEn: "Alexander Gardner",
+    year: 1863,
+    displayDate: "1863 年",
+    mediumDetail: "火棉胶湿版照片",
+    origin: "美国",
+    collection: "美国国会图书馆",
+    sourceFile: "Abraham Lincoln O-80 by Gardner, 1863.jpg",
+    description:
+      "加德纳在林肯总统任内拍下这帧近景肖像，皱纹、深陷的目光与略显疲惫的表情共同呈现战争时期的政治压力。"
+  }),
+  makePhoto({
+    id: "antietam-dead",
+    titleZh: "安提顿战场上的阵亡者",
+    titleEn: "Bodies on the Battlefield at Antietam",
+    artist: "亚历山大·加德纳",
+    artistEn: "Alexander Gardner",
+    year: 1862,
+    displayDate: "1862 年",
+    mediumDetail: "火棉胶湿版照片",
+    origin: "美国",
+    collection: "美国国会图书馆",
+    sourceFile: "Bodies on the battlefield at antietam.jpg",
+    description:
+      "安提顿战役后，阵亡士兵的尸体横陈在田野中。加德纳的照片让远离战场的公众第一次直面美国内战的实际死亡。"
+  }),
+  makePhoto({
+    id: "rebel-sharpshooter",
+    titleZh: "叛军狙击手的藏身处",
+    titleEn: "Home of a Rebel Sharpshooter",
+    artist: "亚历山大·加德纳",
+    artistEn: "Alexander Gardner",
+    year: 1863,
+    displayDate: "1863 年",
+    mediumDetail: "火棉胶湿版照片",
+    origin: "美国",
+    collection: "美国国会图书馆",
+    sourceFile: "Home of a Rebel sharpshooter LCCN2012647605.jpg",
+    description:
+      "葛底斯堡战场上一名南军士兵倒在石垒后，步枪仍靠在旁边。照片后来被证实经过摆拍与位置调整，却成为战争影像如何塑造记忆的经典案例。"
+  }),
+  makePhoto({
+    id: "hindenburg-disaster",
+    titleZh: "兴登堡号灾难",
+    titleEn: "Hindenburg Disaster",
+    artist: "未知摄影师",
+    artistEn: "Unknown photographer",
+    year: 1937,
+    displayDate: "1937 年 5 月 6 日",
+    mediumDetail: "新闻摄影",
+    origin: "美国新泽西",
+    collection: "美国国家档案馆",
+    sourceFile: "Hindenburg disaster (2).jpg",
+    description:
+      "德国飞艇兴登堡号在新泽西降落时起火，巨大的船体迅速被火焰吞没。新闻照片与广播报道一起，终结了大型客运飞艇的时代想象。"
+  }),
+  makePhoto({
+    id: "geronimo-1887",
+    titleZh: "杰罗尼莫",
+    titleEn: "Geronimo",
+    artist: "A. 弗兰克·兰德尔",
+    artistEn: "A. Frank Randall",
+    year: 1887,
+    displayDate: "1887 年",
+    mediumDetail: "摄影肖像",
+    origin: "美国",
+    collection: "美国国家档案馆",
+    sourceFile:
+      "Geronimo (Goyathlay), a Chiricahua Apache, full-length, kneeling with rifle, 1887 - NARA - 530880 restored.jpg",
+    description:
+      "奇里卡瓦阿帕奇领袖杰罗尼莫跪地持枪，直视镜头。照片拍摄于他被俘并失去自由的时期，也暴露了影像如何参与边疆叙事。"
+  }),
+  makePhoto({
+    id: "ellis-island-family",
+    titleZh: "埃利斯岛的意大利移民家庭",
+    titleEn: "Italian Family at Ellis Island",
+    artist: "路易斯·海因",
+    artistEn: "Lewis Hine",
+    year: 1905,
+    displayDate: "1905 年",
+    mediumDetail: "摄影",
+    origin: "美国纽约",
+    collection: "美国国会图书馆",
+    sourceFile: "Italian family in the baggage room, Ellis Island, 1905.jpg",
+    description:
+      "刚刚抵达埃利斯岛的移民家庭坐在行李之间，母亲抱着孩子，神情疲惫而警觉。海因让移民统计数据重新变回具体的人。"
+  }),
+  makePhoto({
+    id: "power-house-mechanic",
+    titleZh: "发电厂机械师",
+    titleEn: "Power House Mechanic",
+    artist: "路易斯·海因",
+    artistEn: "Lewis Hine",
+    year: 1920,
+    displayDate: "约 1920–1921 年",
+    mediumDetail: "明胶银盐照片",
+    origin: "美国",
+    collection: "多馆藏",
+    sourceFile: "Lewis W. Hine - Powerhouse mechanic - Google Art Project.jpg",
+    description:
+      "工人俯身操作巨大机器，扳手、管线与肌肉形成紧密的力量结构。海因把工业劳动拍成兼具尊严与技术复杂度的现代图像。"
+  }),
+  makePhoto({
+    id: "breaker-boys",
+    titleZh: "煤矿选矸男孩",
+    titleEn: "Breaker Boys",
+    artist: "路易斯·海因",
+    artistEn: "Lewis Hine",
+    year: 1911,
+    displayDate: "1911 年",
+    mediumDetail: "明胶银盐照片",
+    origin: "美国宾夕法尼亚",
+    collection: "美国国家档案馆",
+    sourceFile: "Pennsylvania breaker boys 1911.jpg",
+    description:
+      "男孩们坐在煤尘弥漫的选矸台旁，面对镜头露出不同的神情。海因受雇调查童工状况，这些照片直接推动了美国童工立法。"
+  }),
+  makePhoto({
+    id: "cotton-mill-girl",
+    titleZh: "棉纺厂的小纺纱工",
+    titleEn: "A Little Spinner in the Cotton Mill",
+    artist: "路易斯·海因",
+    artistEn: "Lewis Hine",
+    year: 1908,
+    displayDate: "1908 年",
+    mediumDetail: "明胶银盐照片",
+    origin: "美国南卡罗来纳",
+    collection: "美国国会图书馆",
+    sourceFile:
+      "Lewis Hine, A little spinner in the Mollahan Mills, Newberry, S.C. (LOC nclc.01451).jpg",
+    description:
+      "年幼的纺纱工站在机器间，身形几乎被棉线与机械包围。海因的记录让公众看清童工劳动的真实尺度。"
+  }),
+  makePhoto({
+    id: "chief-joseph",
+    titleZh: "约瑟夫酋长",
+    titleEn: "Chief Joseph",
+    artist: "爱德华·柯蒂斯",
+    artistEn: "Edward S. Curtis",
+    year: 1903,
+    displayDate: "1903 年",
+    mediumDetail: "照相凹版",
+    origin: "美国",
+    collection: "美国国会图书馆",
+    sourceFile: "Chief Joseph by Edward Sheriff Curtis.jpg",
+    description:
+      "内兹珀斯领袖约瑟夫酋长以侧身肖像出现在镜头前，披肩、发辫和目光都保持克制。柯蒂斯的影像影响巨大，也长期塑造了外界对北美原住民的想象。"
+  }),
+  makePhoto({
+    id: "times-square-1905",
+    titleZh: "百老汇街景",
+    titleEn: "Broadway from 39th Street",
+    artist: "底特律出版公司",
+    artistEn: "Detroit Publishing Company",
+    year: 1905,
+    displayDate: "约 1905 年",
+    mediumDetail: "商业摄影",
+    origin: "美国纽约",
+    collection: "美国国会图书馆",
+    sourceFile: "Broadway, Manhattan, view north from 39th Street - jpg version.jpg",
+    description:
+      "百老汇街道上马车、行人与早期高楼交织，建筑的立面被广告和招牌覆盖。照片保留了现代都市在二十世纪初的速度与密度。"
+  }),
+  makePhoto({
+    id: "wright-first-flight",
+    titleZh: "第一次动力飞行",
+    titleEn: "First Flight at Kitty Hawk",
+    artist: "约翰·T. 丹尼尔斯",
+    artistEn: "John T. Daniels",
+    year: 1903,
+    displayDate: "1903 年 12 月 17 日",
+    mediumDetail: "玻璃底片摄影",
+    origin: "美国北卡罗来纳",
+    collection: "美国国家档案馆",
+    sourceFile:
+      "Wright Brothers' 1903 Aeroplane Kitty Hawk in First Flight - NARA - 7580929.jpg",
+    description:
+      "莱特飞行者号离地约一米，奥维尔俯卧在驾驶位置，威尔伯在旁奔跑。丹尼尔斯拍下的这一瞬间记录了人类首次持续可控的动力飞行。"
+  }),
+  makePhoto({
+    id: "san-francisco-1906",
+    titleZh: "旧金山大地震后的废墟",
+    titleEn: "San Francisco in Ruins",
+    artist: "未知摄影师",
+    artistEn: "Unknown photographer",
+    year: 1906,
+    displayDate: "1906 年",
+    mediumDetail: "全景摄影",
+    origin: "美国旧金山",
+    collection: "美国国会图书馆",
+    sourceFile: "San Francisco in ruin edit2.jpg",
+    description:
+      "旧金山大地震与随后的大火把城市中心化为连绵废墟。宽广的全景让灾难不再只是局部新闻，而成为整座城市尺度的图像。"
+  }),
+  makePhoto({
+    id: "titanic-southampton",
+    titleZh: "泰坦尼克号",
+    titleEn: "RMS Titanic",
+    artist: "未知摄影师",
+    artistEn: "Unknown photographer",
+    year: 1912,
+    displayDate: "1912 年",
+    mediumDetail: "明胶银盐照片",
+    origin: "英国南安普顿",
+    collection: "多馆藏",
+    sourceFile: "RMS Titanic 3.jpg",
+    description:
+      "泰坦尼克号离开南安普顿前，船体与烟囱占据几乎整个画面。照片记录了这艘“永不沉没”邮轮启航时的自信，也成为灾难发生前的最后证据之一。"
+  }),
+  makePhoto({
+    id: "white-angel-breadline",
+    titleZh: "白天天使救济站",
+    titleEn: "White Angel Breadline",
+    artist: "多萝西娅·兰格",
+    artistEn: "Dorothea Lange",
+    year: 1933,
+    displayDate: "1933 年",
+    mediumDetail: "明胶银盐照片",
+    origin: "美国旧金山",
+    collection: "奥克兰博物馆",
+    sourceFile: "White Angel Breadline, San Francisco, 1932, by Dorothea Lange, 3.jpg",
+    description:
+      "大萧条中的男子排成拥挤的队伍等待免费食物，前景一人背对人群、双手交叠。兰格用这一孤独姿态表现经济危机中的集体困境。"
+  }),
+  makePhoto({
+    id: "allie-mae-burroughs",
+    titleZh: "艾莉·梅·伯勒斯",
+    titleEn: "Allie Mae Burroughs",
+    artist: "沃克·埃文斯",
+    artistEn: "Walker Evans",
+    year: 1936,
+    displayDate: "1936 年",
+    mediumDetail: "明胶银盐照片",
+    origin: "美国亚拉巴马",
+    collection: "美国国会图书馆",
+    sourceFile: "Allie Mae Burroughs, 8c52248u.tif",
+    description:
+      "佃农妻子艾莉·梅·伯勒斯抿着嘴，直视镜头。沃克·埃文斯用近乎冷静的正面构图，让贫困与坚韧同时停留在脸上。"
+  }),
+  makePhoto({
+    id: "sitting-bull",
+    titleZh: "坐牛",
+    titleEn: "Sitting Bull",
+    artist: "D. F. 巴里",
+    artistEn: "D. F. Barry",
+    year: 1883,
+    displayDate: "约 1883 年",
+    mediumDetail: "摄影肖像",
+    origin: "美国达科他地区",
+    collection: "美国国会图书馆",
+    sourceFile: "Sitting Bull by D F Barry ca 1883 Dakota Territory.jpg",
+    description:
+      "汉克帕帕拉科塔领袖坐牛身穿正式服饰，端坐面对镜头。肖像拍摄于他生命后期，也记录了一个仍在抵抗同化政策的政治人物。"
+  }),
+  makePhoto({
+    id: "lunar-orbiter-earth",
+    titleZh: "月球轨道器拍下的地球",
+    titleEn: "First View of Earth from the Moon",
+    artist: "NASA / 月球轨道器1号",
+    artistEn: "NASA / Lunar Orbiter 1",
+    year: 1966,
+    displayDate: "1966 年 8 月 23 日",
+    mediumDetail: "航天器摄影",
+    origin: "月球轨道",
+    collection: "NASA",
+    sourceFile: "First View of Earth from Moon - reprocessed.png",
+    description:
+      "月球轨道器1号从月球附近回望地球，拍下地球悬在月表上方的影像。它比阿波罗8号的《地出》更早，预示了从太空重新认识地球的视角。"
+  }),
+  makePhoto({
+    id: "floyd-burroughs",
+    titleZh: "弗洛伊德·伯勒斯",
+    titleEn: "Floyd Burroughs",
+    artist: "沃克·埃文斯",
+    artistEn: "Walker Evans",
+    year: 1936,
+    displayDate: "1936 年",
+    mediumDetail: "明胶银盐照片",
+    origin: "美国亚拉巴马",
+    collection: "美国国会图书馆",
+    sourceFile: "Floyd Burroughs, cotton sharecropper. Hale County, Alabama LOC 3549662506.jpg",
+    description:
+      "棉农弗洛伊德·伯勒斯穿着背带裤站在木屋前，神情严肃。埃文斯没有加入戏剧化动作，而是让衣服、墙面和目光共同陈述贫困处境。"
+  }),
+  makePhoto({
+    id: "tuskegee-airmen",
+    titleZh: "塔斯克基飞行员",
+    titleEn: "Tuskegee Airmen",
+    artist: "美国陆军航空军",
+    artistEn: "U.S. Army Air Forces",
+    year: 1945,
+    displayDate: "约 1945 年",
+    mediumDetail: "军事摄影",
+    origin: "美国",
+    collection: "美国国家档案馆",
+    sourceFile: "Tuskegee airmen 2 original.jpg",
+    description:
+      "塔斯克基飞行员在基地内列队合影。作为实行种族隔离制度的美军中的非裔飞行单位，他们的服役经历推动了军队与社会对种族平等的争论。"
+  }),
+  makePhoto({
+    id: "manzanar-adams",
+    titleZh: "曼扎纳拘留营的早操",
+    titleEn: "Manzanar Calisthenics",
+    artist: "安塞尔·亚当斯",
+    artistEn: "Ansel Adams",
+    year: 1943,
+    displayDate: "1943 年",
+    mediumDetail: "明胶银盐照片",
+    origin: "美国加州",
+    collection: "美国国会图书馆",
+    sourceFile: "Manzanar calisthenics 0016u.jpg",
+    description:
+      "日裔美国人在曼扎纳战争 relocation center 内集体做早操，远处是荒凉山脉。亚当斯用有序构图记录被拘禁者日常生活的荒诞正常感。"
+  }),
+  makePhoto({
+    id: "manzanar-baseball",
+    titleZh: "曼扎纳拘留营的棒球赛",
+    titleEn: "Baseball at Manzanar",
+    artist: "安塞尔·亚当斯",
+    artistEn: "Ansel Adams",
+    year: 1943,
+    displayDate: "1943 年",
+    mediumDetail: "明胶银盐照片",
+    origin: "美国加州",
+    collection: "美国国会图书馆",
+    sourceFile: "Ansel Adams, Baseball game at Manzanar, 1943.jpg",
+    description:
+      "棒球场上球员与观众正在比赛，营房和荒山构成背景。照片同时呈现社区生活的活力与战时强制拘禁的不自由。"
+  }),
+  makePhoto({
+    id: "mount-williamson-adams",
+    titleZh: "威廉森山前的农场工人",
+    titleEn: "Farm Workers and Mt. Williamson",
+    artist: "安塞尔·亚当斯",
+    artistEn: "Ansel Adams",
+    year: 1944,
+    displayDate: "1944 年",
+    mediumDetail: "明胶银盐照片",
+    origin: "美国加州",
+    collection: "美国国会图书馆",
+    sourceFile: "Ansel Adams - Farm workers and Mt. Williamson.jpg",
+    description:
+      "农场工人沿着田野走向远处雪山，人物在宏大的自然尺度中显得渺小。亚当斯让曼扎纳项目中的人物与风景保持一种庄严的距离。"
+  }),
+  makePhoto({
+    id: "d-day-jaws-death",
+    titleZh: "登陆日：踏入死亡之口",
+    titleEn: "Into the Jaws of Death",
+    artist: "罗伯特·F. 萨金特",
+    artistEn: "Robert F. Sargent",
+    year: 1944,
+    displayDate: "1944 年 6 月 6 日",
+    mediumDetail: "军事新闻摄影",
+    origin: "法国诺曼底",
+    collection: "美国海岸警卫队",
+    sourceFile: "Into the Jaws of Death 23-0455M edit.jpg",
+    description:
+      "盟军士兵从登陆艇跳入海水，顶着德军火力走向奥马哈海滩。照片以“踏入死亡之口”为题，成为诺曼底登陆最广为流传的影像之一。"
+  }),
+  makePhoto({
+    id: "iwo-jima-lowery",
+    titleZh: "硫磺岛首次升旗",
+    titleEn: "First Iwo Jima Flag Raising",
+    artist: "路易斯·R. 洛厄里",
+    artistEn: "Louis R. Lowery",
+    year: 1945,
+    displayDate: "1945 年 2 月 23 日",
+    mediumDetail: "军事新闻摄影",
+    origin: "日本硫磺岛",
+    collection: "美国海军陆战队",
+    sourceFile: "First Iwo Jima Flag Raising.jpg",
+    description:
+      "陆战队员在折钵山山顶竖起第一面美国国旗，摄影师洛厄里本人也在画面附近。它比后来更著名的第二次升旗更早，记录了战场的即时状态。"
+  }),
+  makePhoto({
+    id: "trinity-gadget",
+    titleZh: "三位一体核试验的钚核心",
+    titleEn: "Louis Slotin and the Gadget",
+    artist: "洛斯阿拉莫斯实验室",
+    artistEn: "Los Alamos Laboratory",
+    year: 1945,
+    displayDate: "1945 年",
+    mediumDetail: "科学记录摄影",
+    origin: "美国新墨西哥",
+    collection: "美国国家档案馆",
+    sourceFile: "Louis Slotin and the Gadget Bomb.jpg",
+    description:
+      "物理学家路易斯·斯洛廷与“小玩意”钚核心同框，装置即将用于三位一体核试验。照片把人、仪器与即将改变世界的尺度并置在一起。"
+  }),
+  makePhoto({
+    id: "enola-gay-little-boy",
+    titleZh: "小男孩原子弹装填",
+    titleEn: "Loading Little Boy",
+    artist: "美国陆军航空军",
+    artistEn: "U.S. Army Air Forces",
+    year: 1945,
+    displayDate: "1945 年 8 月 5 日",
+    mediumDetail: "军事记录摄影",
+    origin: "天宁岛",
+    collection: "美国国家档案馆",
+    sourceFile:
+      "Loading of the Little Boy nuclear bomb into the Boeing B-29 on Tinian, Mariana Island, 5 August 1945 (76048611).jpg",
+    description:
+      "技术人员把“小男孩”原子弹装入 B-29 轰炸机弹舱。照片看起来像一次普通军事作业，却记录了核武器投入实战前最后的准备阶段。"
+  }),
+  makePhoto({
+    id: "nagasaki-mushroom",
+    titleZh: "长崎原子弹云",
+    titleEn: "Atomic Cloud over Nagasaki",
+    artist: "查尔斯·利维",
+    artistEn: "Charles Levy",
+    year: 1945,
+    displayDate: "1945 年 8 月 9 日",
+    mediumDetail: "军事航空摄影",
+    origin: "日本长崎",
+    collection: "美国国家档案馆",
+    sourceFile: "Nagasakibomb.jpg",
+    description:
+      "原子弹在长崎上空爆炸后，蘑菇云从城市升起。这张从飞机上拍摄的照片把核毁灭的尺度压缩进一张风景式构图，也成为二十世纪最沉重的影像之一。"
+  }),
+  makePhoto({
+    id: "berlin-airlift",
+    titleZh: "柏林空运的糖果轰炸机",
+    titleEn: "Berlin Airlift Candy Bomber",
+    artist: "美国空军",
+    artistEn: "U.S. Air Force",
+    year: 1948,
+    displayDate: "约 1948–1949 年",
+    mediumDetail: "军事新闻摄影",
+    origin: "德国柏林",
+    collection: "美国国家档案馆",
+    sourceFile: "C-54 dropping candy during Berlin Airlift c1949.jpg",
+    description:
+      "C-54 运输机低空飞过柏林，用降落伞投下糖果。柏林封锁期间，空运不仅提供物资，也成为冷战双方争夺民心的高 visibility 行动。"
+  }),
+  makePhoto({
+    id: "korean-war-chaplain",
+    titleZh: "朝鲜战争中的战地葬礼",
+    titleEn: "Memorial Service in Korea",
+    artist: "美国海军陆战队",
+    artistEn: "U.S. Marine Corps",
+    year: 1950,
+    displayDate: "1950 年",
+    mediumDetail: "军事新闻摄影",
+    origin: "朝鲜古土里",
+    collection: "美国国家档案馆",
+    sourceFile:
+      "A wounded chaplain reads a memorial service over the snow-covered bodies of dead Marines HD-SN-99-03171.jpg",
+    description:
+      "一名负伤随军牧师在雪地中为阵亡陆战队员主持悼念仪式。照片没有展示战斗，却用雪、绷带与遗体呈现出战争的后果。"
+  }),
+  makePhoto({
+    id: "rosie-riveter",
+    titleZh: "铆工罗西",
+    titleEn: "Rosie the Riveter",
+    artist: "阿尔弗雷德·T. 帕尔默",
+    artistEn: "Alfred T. Palmer",
+    year: 1943,
+    displayDate: "1943 年",
+    mediumDetail: "政府宣传摄影",
+    origin: "美国",
+    collection: "美国国会图书馆",
+    sourceFile: "Rosie the Riveter restored version.jpg",
+    description:
+      "女工站在飞机零件与工具之间，午餐盒上写着“铆工罗西”。照片把女性进入重工业劳动的现实，转化为二战动员的经典宣传图像。"
+  }),
+  makePhoto({
+    id: "sputnik-1957",
+    titleZh: "斯普特尼克1号",
+    titleEn: "Sputnik 1",
+    artist: "未知摄影师",
+    artistEn: "Unknown photographer",
+    year: 1957,
+    displayDate: "1957 年",
+    mediumDetail: "卫星实物摄影",
+    origin: "苏联",
+    collection: "博物馆藏品",
+    sourceFile: "USSR Sputnik I, 1957, 1st Man-made Satellite (Replica) (10437199454).jpg",
+    license: "CC0",
+    licenseUrl: "https://creativecommons.org/publicdomain/zero/1.0/",
+    attribution: "Unknown photographer, CC0, via Wikimedia Commons",
+    description:
+      "斯普特尼克1号复制品展示出四个外置天线与抛光金属球体。它的成功发射开启了太空竞赛，也让卫星进入普通人的日常词汇。"
+  }),
+  makePhoto({
+    id: "explorer-1-launch",
+    titleZh: "探险者1号发射",
+    titleEn: "Launch of Explorer 1",
+    artist: "NASA / 美国陆军",
+    artistEn: "NASA / U.S. Army",
+    year: 1958,
+    displayDate: "1958 年 1 月 31 日",
+    mediumDetail: "航天发射摄影",
+    origin: "美国佛罗里达",
+    collection: "NASA",
+    sourceFile: "Explorer I launched Jan. 31, 1958 (116-KSC-68P-17).jpg",
+    description:
+      "美国第一颗人造卫星探险者1号乘朱诺一号火箭升空。它发现了范艾伦辐射带，也让美国的太空计划进入新的科学阶段。"
+  }),
+  makePhoto({
+    id: "jfk-inauguration",
+    titleZh: "肯尼迪总统就职典礼",
+    titleEn: "JFK Inauguration",
+    artist: "美国国会",
+    artistEn: "U.S. Congress",
+    year: 1961,
+    displayDate: "1961 年 1 月 20 日",
+    mediumDetail: "新闻摄影",
+    origin: "美国华盛顿",
+    collection: "美国国会图书馆",
+    sourceFile: "JFK Inauguration from Capitol view.jpg",
+    description:
+      "肯尼迪在国会大厦前宣誓就职，观众与建筑填满画面。照片捕捉了冷战初期新一代政府登场时的仪式感与公众期待。"
+  }),
+  makePhoto({
+    id: "cuban-missile-u2",
+    titleZh: "古巴导弹危机的U-2照片",
+    titleEn: "U-2 Photograph of Cuban Missile Sites",
+    artist: "美国空军",
+    artistEn: "U.S. Air Force",
+    year: 1962,
+    displayDate: "1962 年",
+    mediumDetail: "航空侦察摄影",
+    origin: "古巴",
+    collection: "美国国家档案馆",
+    sourceFile: "U-2 photo during Cuban Missile Crisis.jpg",
+    description:
+      "U-2 高空侦察机从古巴上空拍下导弹基地与运输设施。照片成为肯尼迪政府判断危机的核心证据，也让航空摄影直接进入最高层政治决策。"
+  }),
+  makePhoto({
+    id: "i-have-a-dream-1963",
+    titleZh: "我有一个梦想",
+    titleEn: "I Have a Dream",
+    artist: "美国新闻署",
+    artistEn: "U.S. Information Agency",
+    year: 1963,
+    displayDate: "1963 年 8 月 28 日",
+    mediumDetail: "民权运动摄影",
+    origin: "美国华盛顿",
+    collection: "美国国家档案馆",
+    sourceFile: "I Have a Dream in Color.jpg",
+    description:
+      "马丁·路德·金在林肯纪念堂前向数十万游行者发表演讲。彩色照片保留了人群、旗帜与讲台之间的空间关系，也凝固了民权运动的高峰时刻。"
+  }),
+  makePhoto({
+    id: "gemini-4-spacewalk",
+    titleZh: "吉米尼4号太空行走",
+    titleEn: "First American Spacewalk",
+    artist: "NASA",
+    artistEn: "NASA",
+    year: 1965,
+    displayDate: "1965 年 6 月 3 日",
+    mediumDetail: "航天摄影",
+    origin: "地球轨道",
+    collection: "NASA",
+    sourceFile: "Ed White performs first U.S. spacewalk - GPN-2006-000025.jpg",
+    description:
+      "宇航员埃德·怀特在太空中离开吉米尼4号座舱，身后是地球弧线与漆黑宇宙。照片让“人在太空中漂浮”从技术描述变成可见经验。"
+  }),
+  makePhoto({
+    id: "apollo-11-launch",
+    titleZh: "阿波罗11号发射",
+    titleEn: "Apollo 11 Launch",
+    artist: "NASA",
+    artistEn: "NASA",
+    year: 1969,
+    displayDate: "1969 年 7 月 16 日",
+    mediumDetail: "航天摄影",
+    origin: "美国佛罗里达",
+    collection: "NASA",
+    sourceFile: "Apollo 11 Launch - GPN-2000-000628.jpg",
+    description:
+      "土星五号火箭从肯尼迪航天中心升空，烟雾与火焰照亮发射台。人类首次登月任务在这一刻离开地球。"
+  }),
+  makePhoto({
+    id: "apollo-11-aldrin",
+    titleZh: "奥尔德林与登月舱",
+    titleEn: "Buzz Aldrin and the Lunar Module",
+    artist: "尼尔·阿姆斯特朗 / NASA",
+    artistEn: "Neil Armstrong / NASA",
+    year: 1969,
+    displayDate: "1969 年 7 月 20 日",
+    mediumDetail: "航天摄影",
+    origin: "月球静海",
+    collection: "NASA",
+    sourceFile: "Buzz Aldrin and Apollo 11 Lunar Lander, AS11-40-5927.jpg",
+    description:
+      "奥尔德林站在月球表面，面罩反射出登月舱与摄影者阿姆斯特朗。照片把个人身体、技术装置与陌生星球放在同一画面中。"
+  }),
+  makePhoto({
+    id: "apollo-11-flag",
+    titleZh: "阿波罗11号与星条旗",
+    titleEn: "Apollo 11 and the American Flag",
+    artist: "尼尔·阿姆斯特朗 / NASA",
+    artistEn: "Neil Armstrong / NASA",
+    year: 1969,
+    displayDate: "1969 年 7 月 20 日",
+    mediumDetail: "航天摄影",
+    origin: "月球静海",
+    collection: "NASA",
+    sourceFile:
+      "AS11-40-5875 - Apollo 11 - Apollo 11 Mission image - Astronaut Edwin Aldrin salutes the U.S. flag that has been placed on the moon - NARA - 16685052.jpg",
+    description:
+      "奥尔德林向插在月壤中的美国国旗敬礼，背景是登月舱与荒凉月面。照片同时呈现了国家象征、技术胜利与月球环境的异质感。"
+  }),
+  makePhoto({
+    id: "blue-marble-1972",
+    titleZh: "蓝色弹珠",
+    titleEn: "The Blue Marble",
+    artist: "阿波罗17号宇航员 / NASA",
+    artistEn: "Apollo 17 crew / NASA",
+    year: 1972,
+    displayDate: "1972 年 12 月 7 日",
+    mediumDetail: "航天摄影",
+    origin: "地月转移轨道",
+    collection: "NASA",
+    sourceFile: "The Blue Marble, AS17-148-22727.jpg",
+    description:
+      "阿波罗17号宇航员回望地球，拍下几乎完整被阳光照亮的蓝色星球。照片后来成为环境运动与“只有一个地球”观念的重要象征。"
+  }),
+  makePhoto({
+    id: "mount-st-helens-1980",
+    titleZh: "圣海伦斯火山爆发",
+    titleEn: "Mount St. Helens Eruption",
+    artist: "美国地质调查局",
+    artistEn: "U.S. Geological Survey",
+    year: 1980,
+    displayDate: "1980 年 5 月 18 日",
+    mediumDetail: "科学记录摄影",
+    origin: "美国华盛顿州",
+    collection: "美国地质调查局",
+    sourceFile: "MSH80 eruption mount st helens 05-18-80-dramatic-edit.jpg",
+    description:
+      "火山侧翼崩塌后，巨大的灰柱和碎屑流冲上天空。地面摄影师在危险距离外记录了现代火山学最具冲击力的现场影像之一。"
+  }),
+  makePhoto({
+    id: "challenger-disaster",
+    titleZh: "挑战者号爆炸",
+    titleEn: "Challenger Disaster",
+    artist: "NASA",
+    artistEn: "NASA",
+    year: 1986,
+    displayDate: "1986 年 1 月 28 日",
+    mediumDetail: "航天事故摄影",
+    origin: "美国佛罗里达",
+    collection: "NASA",
+    sourceFile: "Challenger explosion.jpg",
+    description:
+      "挑战者号航天飞机升空后不久解体，烟雾在空中分裂成两条明显轨迹。事故导致七名宇航员遇难，并深刻改变了航天安全与公众沟通方式。"
+  }),
+  makePhoto({
+    id: "pale-blue-dot",
+    titleZh: "暗淡蓝点",
+    titleEn: "Pale Blue Dot",
+    artist: "NASA / JPL",
+    artistEn: "NASA / JPL",
+    year: 1990,
+    displayDate: "1990 年 2 月 14 日",
+    mediumDetail: "深空摄影",
+    origin: "太阳系边缘",
+    collection: "NASA / JPL",
+    sourceFile: "Pale Blue Dot from Voyager 1 - PIA23645.png",
+    description:
+      "旅行者1号在约60亿公里外回望地球，地球只占画面中一个微小的蓝色像素。影像几乎改变了人类理解自身位置的方式。"
+  }),
+  makePhoto({
+    id: "pillars-of-creation-1995",
+    titleZh: "创生之柱",
+    titleEn: "Pillars of Creation",
+    artist: "NASA / ESA / STScI",
+    artistEn: "NASA / ESA / STScI",
+    year: 1995,
+    displayDate: "1995 年",
+    mediumDetail: "哈勃空间望远镜成像",
+    origin: "鹰状星云",
+    collection: "NASA / ESA",
+    sourceFile: "Pillars of creation 2014 HST WFC3-UVIS full-res denoised.jpg",
+    description:
+      "哈勃望远镜拍到鹰状星云内部高耸的气体与尘埃柱，恒星在柱体边缘形成。它把恒星诞生这样的天文过程变成了具有雕塑感的图像。"
+  }),
+  makePhoto({
+    id: "voyager-golden-record",
+    titleZh: "检查旅行者金唱片",
+    titleEn: "Inspecting the Voyager Golden Record",
+    artist: "NASA",
+    artistEn: "NASA",
+    year: 1977,
+    displayDate: "1977 年",
+    mediumDetail: "航天器记录载体",
+    origin: "美国",
+    collection: "NASA",
+    sourceFile: "Voyager-golden-record-etching-7-28-77 30217512534 o.jpg",
+    description:
+      "NASA 工作人员举起旅行者号金唱片，检查唱片表面的蚀刻图案。唱片收录地球的声音、音乐与图像编码，也包含指导外星文明播放它的说明。"
+  }),
+  makePhoto({
+    id: "columbia-first-launch",
+    titleZh: "哥伦比亚号首次发射",
+    titleEn: "First Space Shuttle Launch",
+    artist: "NASA",
+    artistEn: "NASA",
+    year: 1981,
+    displayDate: "1981 年 4 月 12 日",
+    mediumDetail: "航天摄影",
+    origin: "美国佛罗里达",
+    collection: "NASA",
+    sourceFile: "Space Shuttle Columbia launching.jpg",
+    description:
+      "哥伦比亚号在 STS-1 任务中升空，开启可重复使用航天飞机时代。火箭烟雾与轨道器外形共同构成了新的太空时代图像。"
+  }),
+  makePhoto({
+    id: "hubble-deployment",
+    titleZh: "哈勃太空望远镜部署",
+    titleEn: "Hubble Space Telescope Deployment",
+    artist: "NASA",
+    artistEn: "NASA",
+    year: 1990,
+    displayDate: "1990 年 4 月",
+    mediumDetail: "航天摄影",
+    origin: "地球轨道",
+    collection: "NASA",
+    sourceFile: "Hubble Space Telescope Deployment from Shuttle Discovery (27512135784).jpg",
+    description:
+      "发现号航天飞机的机械臂把哈勃太空望远镜释放到轨道中，地球云层在背景中铺开。它开启了人类持续观测深空的新阶段。"
+  }),
+  makePhoto({
+    id: "mars-pathfinder",
+    titleZh: "火星探路者全景",
+    titleEn: "Mars Pathfinder Panorama",
+    artist: "NASA / JPL / USGS",
+    artistEn: "NASA / JPL / USGS",
+    year: 1997,
+    displayDate: "1997 年",
+    mediumDetail: "火星车全景摄影",
+    origin: "火星阿瑞斯谷",
+    collection: "NASA / JPL",
+    sourceFile: "Mars Pathfinder Panorama (USGS NASA) (420376775).jpg",
+    description:
+      "火星探路者号与旅居者号火星车拍摄周围红色荒原，画面由多张影像拼接而成。它让互联网时代的公众第一次能够持续跟随火星表面探索。"
+  }),
+  makePhoto({
+    id: "saturn-v-rollout",
+    titleZh: "土星五号运往发射台",
+    titleEn: "Saturn V Rollout",
+    artist: "NASA",
+    artistEn: "NASA",
+    year: 1969,
+    displayDate: "1969 年",
+    mediumDetail: "航天工程摄影",
+    origin: "美国佛罗里达",
+    collection: "NASA",
+    sourceFile: "Apollo 11 Saturn V during rollout (48257592861).jpg",
+    description:
+      "巨型履带运输车把阿波罗11号土星五号火箭缓缓移向发射台。人与车辆在火箭旁边显得极小，把工程尺度直接转化为视觉压力。"
+  }),
+  makePhoto({
+    id: "apollo-11-bootprint",
+    titleZh: "月球上的脚印",
+    titleEn: "Apollo 11 Bootprint",
+    artist: "巴兹·奥尔德林 / NASA",
+    artistEn: "Buzz Aldrin / NASA",
+    year: 1969,
+    displayDate: "1969 年 7 月 20 日",
+    mediumDetail: "航天摄影",
+    origin: "月球静海",
+    collection: "NASA",
+    sourceFile: "Buzz Aldrin's bootprint on the Moon, AS11-40-5877.jpg",
+    description:
+      "宇航靴在细密月壤上留下清晰压痕，脚印边缘没有风或水侵蚀的迹象。这个微小印记证明人类已经踏上另一个天体。"
+  })
+];
+
+export const artworks = [...coreArtworks, ...additionalArtworks, ...photoArtworks];
 
 export const homepageArtworkIds = [
   "arnolfini-portrait",
