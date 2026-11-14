@@ -1,0 +1,20 @@
+{
+  "name": "lumen-archive",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A curated, open-source timeline of iconic paintings and photographs.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "fetch:artworks": "node scripts/fetch-artworks.mjs"
+  },
+  "dependencies": {
+    "lucide": "^0.468.0"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.5",
+    "vite": "^6.0.5"
+  }
+}
