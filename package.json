@@ -4,6 +4,12 @@
   "version": "0.1.0",
   "type": "module",
   "description": "A curated, open-source timeline of iconic paintings and photographs.",
+  "homepage": "https://lissa7zz.github.io/lumen-archive/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lissa7zz/lumen-archive.git"
+  },
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

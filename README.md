@@ -1,53 +1,121 @@
-# 光迹美术馆 / Lumen Archive
+[English](README.md) | [简体中文](README.zh-CN.md)
 
-一个开源的跨媒介艺术时间线，收录从文艺复兴到太空时代的经典绘画、版画与摄影作品。首版包含 12 件作品、高清本地图像、媒介筛选、全文搜索、横向时间轴与可缩放的详情查看器。
+[![Deploy to GitHub Pages](https://github.com/Lissa7zz/lumen-archive/actions/workflows/deploy.yml/badge.svg)](https://github.com/Lissa7zz/lumen-archive/actions/workflows/deploy.yml)
 
-## 在线体验
+**Quick access: [Open Lumen Archive](https://lissa7zz.github.io/lumen-archive/)**
 
-GitHub Pages: <https://lissa7zz.github.io/lumen-archive/>
+# Lumen Archive
 
-## 本地运行
+Lumen Archive is an open-source, cross-media timeline of paintings, prints, and
+photography. The first collection brings together 12 works from 1434 to 1984,
+with local high-resolution images, source information, and a viewer designed
+for close inspection.
 
-需要 Node.js 20 或更高版本。
+The site is a static build. It has no backend, account system, analytics, or
+image-processing service.
+
+## Highlights
+
+- 12 curated paintings, prints, and photographs
+- Chronological exhibition wall and horizontal timeline
+- Search by title, artist, year, medium, or origin
+- 1600 px and 3200 px WebP viewing assets
+- Zoom with the mouse wheel, buttons, double-click, or a touch pinch gesture
+- Drag to pan when enlarged, with touch swipe navigation at fit scale
+- Keyboard controls, fullscreen mode, and a mobile artwork-information drawer
+- Direct links to the original Wikimedia Commons records
+- Per-work licensing and attribution documentation
+
+## Viewer controls
+
+| Action | Control |
+|---|---|
+| Zoom in or out | Mouse wheel, `+` / `-`, or the viewer toolbar |
+| Inspect another area | Drag the enlarged image |
+| Fit to the screen | Double-click the image, press `0`, or use the reset button |
+| Previous or next work | Arrow keys or the side controls |
+| Pan with the keyboard | `Shift` + arrow key |
+| Enter or leave fullscreen | `F` or the fullscreen button |
+| Close the viewer | `Esc` |
+
+On touch screens, pinch to zoom, drag with one finger after zooming, and swipe
+horizontally at fit scale to change works.
+
+## Quick start
+
+Node.js 20 or newer is required.
 
 ```bash
 npm install
 npm run dev
 ```
 
-构建静态文件：
+Create a production build:
 
 ```bash
 npm run build
 npm run preview
 ```
 
-## 重新获取作品图像
+## Artwork assets
 
-作品清单与说明位于 `src/data/artworks.js`。图像处理脚本会从 Wikimedia Commons 获取高分辨率版本，并生成可直接部署的 WebP 文件：
+Work metadata and source records are stored in `src/data/artworks.js`. The
+image pipeline downloads high-resolution files from Wikimedia Commons and
+generates the local WebP variants:
 
 ```bash
 npm run fetch:artworks
 ```
 
-该命令需要网络连接。原始下载缓存保存在 `work/artwork-sources/`，不会提交到 Git；生成图片位于 `public/artworks/`。
+Downloaded source files are cached under `work/artwork-sources/` and are not
+committed. Deployable images are written to `public/artworks/`.
 
-## 项目结构
+## Project layout
 
 ```text
 src/
-  data/artworks.js     作品信息与来源
-  main.js              页面渲染、筛选、搜索与查看器
-  styles.css           响应式视觉样式
+  data/artworks.js      artwork records and source links
+  main.js               page rendering, search, timeline, and image viewer
+  styles.css            responsive site and viewer styles
 scripts/
-  fetch-artworks.mjs   图像下载、压缩与许可清单生成
-public/artworks/       本地 WebP 展示图
+  fetch-artworks.mjs    artwork download and WebP generation
+public/artworks/        local display images
 ```
 
-## 许可
+## Artwork rights
 
-- 网站代码与原创中文文本：MIT
-- 作品图像：Public Domain，另有 1 件为 CC BY 2.0
-- 每件作品的作者、来源与许可详见 [ATTRIBUTION.md](./ATTRIBUTION.md)
+The MIT License applies to the original project code and written content. It
+does not apply to the reproduced artworks.
 
-如果重新使用站内图像，请保留对应作品页面链接，并遵守该图像的具体许可。
+Most images in this collection are in the public domain. *The Second Sunset of
+the Day* is used under CC BY 2.0 and requires attribution. Source pages,
+licenses, and attribution strings are listed in
+[ATTRIBUTION.md](ATTRIBUTION.md); additional third-party notices are in
+[NOTICE.md](NOTICE.md).
+
+This is an independent educational project. It is not affiliated with or
+endorsed by the museums, archives, photographers, or estates referenced in the
+collection. Institutional names and artwork titles remain the property of
+their respective owners.
+
+## Developer
+
+- Developer: Lissa7zz
+- AI collaboration: OpenAI Codex
+- Repository: [Lissa7zz/lumen-archive](https://github.com/Lissa7zz/lumen-archive)
+
+## License
+
+Copyright (C) 2026 Lissa7zz
+
+Original project code, documentation, and original curatorial text are
+released under the [MIT License](LICENSE). You may copy, modify, and distribute
+them under its terms.
+
+The software is provided "AS IS", without any express or implied warranty.
+Artwork reproductions and third-party material remain subject to their
+respective rights and licenses.
+
+---
+
+<p align="center"><em>كأن قلبي لم يعد ينبض؛ والريح الباردة تطلق تنهداتها — سانتاباد.</em></p>

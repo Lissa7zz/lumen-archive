@@ -1,5 +1,21 @@
 import "./styles.css";
-import { createIcons, ArrowDown, ArrowLeft, ArrowRight, Expand, Github, Image, Search, X, ZoomIn } from "lucide";
+import {
+  createIcons,
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  Expand,
+  Github,
+  Image,
+  Info,
+  Maximize2,
+  Minimize2,
+  Minus,
+  Plus,
+  RotateCcw,
+  Search,
+  X
+} from "lucide";
 import { featuredArtwork, worksByYear } from "./data/artworks.js";
 
 const app = document.querySelector("#app");
@@ -183,35 +199,83 @@ app.innerHTML = `
   </div>
 
   <dialog class="viewer" data-viewer aria-labelledby="viewer-title">
-    <div class="viewer__bar">
-      <span class="viewer__counter" data-viewer-counter></span>
-      <div class="viewer__bar-actions">
+    <header class="viewer__topbar">
+      <div class="viewer__identity">
+        <span class="viewer__counter" data-viewer-counter></span>
+        <span class="viewer__identity-line" aria-hidden="true"></span>
+        <span class="viewer__current" data-viewer-current></span>
+      </div>
+      <div class="viewer__topbar-actions">
         <a class="viewer__source" data-viewer-source target="_blank" rel="noreferrer">
           原始档案
           <i data-lucide="arrow-right" aria-hidden="true"></i>
         </a>
-        <button class="icon-button" type="button" data-viewer-close aria-label="关闭作品查看器">
+        <button
+          class="viewer__info-button"
+          type="button"
+          data-viewer-info-toggle
+          aria-controls="viewer-info"
+          aria-expanded="false"
+        >
+          <i data-lucide="info" aria-hidden="true"></i>
+          作品信息
+        </button>
+        <button class="icon-button" type="button" data-viewer-fullscreen aria-label="进入全屏" title="进入全屏">
+          <i data-lucide="maximize-2" data-fullscreen-enter aria-hidden="true"></i>
+          <i data-lucide="minimize-2" data-fullscreen-exit aria-hidden="true" hidden></i>
+        </button>
+        <button class="icon-button" type="button" data-viewer-close aria-label="关闭作品查看器" title="关闭">
           <i data-lucide="x" aria-hidden="true"></i>
         </button>
       </div>
-    </div>
+    </header>
+
     <div class="viewer__body">
-      <div class="viewer__stage">
-        <button class="viewer__nav viewer__nav--prev" type="button" data-viewer-prev aria-label="上一件作品">
+      <section class="viewer__stage" data-viewer-stage tabindex="0" aria-label="作品图像查看区">
+        <div class="viewer__zoom-tools" role="group" aria-label="缩放控制">
+          <button type="button" data-viewer-zoom-out aria-label="缩小" title="缩小">
+            <i data-lucide="minus" aria-hidden="true"></i>
+          </button>
+          <button
+            class="viewer__zoom-readout"
+            type="button"
+            data-viewer-fit
+            aria-label="适应屏幕"
+            title="适应屏幕"
+          >
+            <span data-viewer-zoom-value>100%</span>
+          </button>
+          <button type="button" data-viewer-zoom-in aria-label="放大" title="放大">
+            <i data-lucide="plus" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <button class="viewer__nav viewer__nav--prev" type="button" data-viewer-prev aria-label="上一件作品" title="上一件作品">
           <i data-lucide="arrow-left" aria-hidden="true"></i>
         </button>
-        <button class="viewer__image-button" type="button" data-viewer-zoom aria-label="放大或还原图片" title="点击缩放">
-          <img data-viewer-image alt="" />
-        </button>
-        <button class="viewer__nav viewer__nav--next" type="button" data-viewer-next aria-label="下一件作品">
+
+        <div class="viewer__canvas" data-viewer-canvas>
+          <img class="viewer__preview" data-viewer-preview alt="" aria-hidden="true" />
+          <img class="viewer__full" data-viewer-image alt="" draggable="false" />
+          <span class="viewer__loader" aria-hidden="true"><span></span></span>
+        </div>
+
+        <button class="viewer__nav viewer__nav--next" type="button" data-viewer-next aria-label="下一件作品" title="下一件作品">
           <i data-lucide="arrow-right" aria-hidden="true"></i>
         </button>
-        <span class="viewer__zoom-hint">
-          <i data-lucide="zoom-in" aria-hidden="true"></i>
-          点击画面缩放
-        </span>
-      </div>
-      <aside class="viewer__info">
+
+        <div class="viewer__stage-footer">
+          <span class="viewer__scale-status" data-viewer-zoom-status aria-live="polite"></span>
+          <button type="button" data-viewer-reset aria-label="恢复适应屏幕" title="恢复适应屏幕">
+            <i data-lucide="rotate-ccw" aria-hidden="true"></i>
+          </button>
+        </div>
+      </section>
+
+      <aside class="viewer__info" id="viewer-info" data-viewer-info>
+        <button class="viewer__info-close" type="button" data-viewer-info-close aria-label="收起作品信息">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
         <p class="eyebrow" data-viewer-label></p>
         <h2 id="viewer-title" data-viewer-title></h2>
         <p class="viewer__original-title" data-viewer-original-title></p>
@@ -252,7 +316,22 @@ app.innerHTML = `
   </div>
 `;
 
-const iconSet = { ArrowDown, ArrowLeft, ArrowRight, Expand, Github, Image, Search, X, ZoomIn };
+const iconSet = {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  Expand,
+  Github,
+  Image,
+  Info,
+  Maximize2,
+  Minimize2,
+  Minus,
+  Plus,
+  RotateCcw,
+  Search,
+  X
+};
 
 function refreshIcons() {
   createIcons({
@@ -267,7 +346,14 @@ const gallery = document.querySelector("[data-gallery]");
 const timeline = document.querySelector("[data-timeline]");
 const viewer = document.querySelector("[data-viewer]");
 const viewerImage = document.querySelector("[data-viewer-image]");
+const viewerPreview = document.querySelector("[data-viewer-preview]");
 const viewerStage = document.querySelector(".viewer__stage");
+const viewerCanvas = document.querySelector("[data-viewer-canvas]");
+const viewerInfo = document.querySelector("[data-viewer-info]");
+const viewerInfoToggle = document.querySelector("[data-viewer-info-toggle]");
+const viewerZoomValue = document.querySelector("[data-viewer-zoom-value]");
+const viewerZoomStatus = document.querySelector("[data-viewer-zoom-status]");
+const viewerFullscreenButton = document.querySelector("[data-viewer-fullscreen]");
 const globalSearch = document.querySelector("[data-search]");
 const searchBackdrop = document.querySelector("[data-search-backdrop]");
 const searchPanelInput = document.querySelector("[data-search-panel-input]");
@@ -282,6 +368,19 @@ const state = {
   visibleWorks: [...worksByYear],
   selectedId: worksByYear[0].id,
   lastFocusedElement: null
+};
+
+const viewerState = {
+  zoom: 1,
+  panX: 0,
+  panY: 0,
+  minZoom: 1,
+  maxZoom: 4,
+  pointers: new Map(),
+  gesture: null,
+  currentSlug: "",
+  loadToken: 0,
+  preloads: []
 };
 
 function matchesSearch(work, query) {
@@ -410,18 +509,184 @@ function findWorkIndex(id) {
   };
 }
 
+function clamp(value, minimum, maximum) {
+  return Math.min(Math.max(value, minimum), maximum);
+}
+
+function viewerPanBounds(zoom = viewerState.zoom) {
+  const canvasWidth = viewerCanvas.clientWidth || 1;
+  const canvasHeight = viewerCanvas.clientHeight || 1;
+  const imageWidth = viewerImage.offsetWidth || canvasWidth;
+  const imageHeight = viewerImage.offsetHeight || canvasHeight;
+
+  return {
+    x: Math.max(0, (imageWidth * zoom - canvasWidth) / 2),
+    y: Math.max(0, (imageHeight * zoom - canvasHeight) / 2)
+  };
+}
+
+function clampViewerPan() {
+  const bounds = viewerPanBounds();
+  viewerState.panX = clamp(viewerState.panX, -bounds.x, bounds.x);
+  viewerState.panY = clamp(viewerState.panY, -bounds.y, bounds.y);
+}
+
+function updateViewerZoomReadout() {
+  const percentage = Math.round(viewerState.zoom * 100);
+  viewerZoomValue.textContent = `${percentage}%`;
+  viewerZoomStatus.textContent =
+    viewerState.zoom <= 1.01
+      ? "100% · 适应屏幕"
+      : `已放大至 ${percentage}%`;
+  viewerCanvas.classList.toggle("is-zoomed", viewerState.zoom > 1.01);
+}
+
+function applyViewerTransform(animate = false) {
+  clampViewerPan();
+  viewerImage.classList.toggle("is-animating", animate);
+  viewerImage.style.transform =
+    `translate3d(${viewerState.panX}px, ${viewerState.panY}px, 0) ` +
+    `scale(${viewerState.zoom})`;
+  updateViewerZoomReadout();
+
+  if (animate) {
+    window.setTimeout(() => viewerImage.classList.remove("is-animating"), 220);
+  }
+}
+
+function setViewerZoom(nextZoom, focalPoint = null, animate = true) {
+  const targetZoom = clamp(nextZoom, viewerState.minZoom, viewerState.maxZoom);
+  const previousZoom = viewerState.zoom;
+  const rect = viewerCanvas.getBoundingClientRect();
+  const focalX =
+    (focalPoint?.clientX ?? rect.left + rect.width / 2) -
+    (rect.left + rect.width / 2);
+  const focalY =
+    (focalPoint?.clientY ?? rect.top + rect.height / 2) -
+    (rect.top + rect.height / 2);
+  const ratio = targetZoom / previousZoom;
+
+  viewerState.panX = viewerState.panX * ratio + focalX * (1 - ratio);
+  viewerState.panY = viewerState.panY * ratio + focalY * (1 - ratio);
+  viewerState.zoom = targetZoom;
+  applyViewerTransform(animate);
+}
+
+function resetViewerZoom(animate = true) {
+  viewerState.zoom = 1;
+  viewerState.panX = 0;
+  viewerState.panY = 0;
+  applyViewerTransform(animate);
+}
+
+function panViewerBy(deltaX, deltaY) {
+  if (viewerState.zoom <= 1.01) return;
+  viewerState.panX += deltaX;
+  viewerState.panY += deltaY;
+  applyViewerTransform(true);
+}
+
+function setViewerInfoOpen(open, focusControl = false) {
+  const compact = window.matchMedia("(max-width: 760px)").matches;
+  const shouldOpen = compact && open;
+
+  viewerInfo.classList.toggle("is-open", shouldOpen);
+  viewerInfoToggle.setAttribute("aria-expanded", String(shouldOpen));
+  viewerInfo.toggleAttribute("inert", compact && !shouldOpen);
+  if (compact) viewerInfo.setAttribute("aria-hidden", String(!shouldOpen));
+  else viewerInfo.removeAttribute("aria-hidden");
+
+  if (focusControl && compact) {
+    requestAnimationFrame(() => {
+      const target = shouldOpen
+        ? document.querySelector("[data-viewer-info-close]")
+        : viewerInfoToggle;
+      target?.focus({ preventScroll: true });
+    });
+  }
+}
+
+function syncFullscreenControl() {
+  const isFullscreen = document.fullscreenElement === viewer;
+  viewerFullscreenButton.setAttribute(
+    "aria-label",
+    isFullscreen ? "退出全屏" : "进入全屏"
+  );
+  viewerFullscreenButton.title = isFullscreen ? "退出全屏" : "进入全屏";
+  document.querySelector("[data-fullscreen-enter]")?.toggleAttribute("hidden", isFullscreen);
+  document.querySelector("[data-fullscreen-exit]")?.toggleAttribute("hidden", !isFullscreen);
+}
+
+async function toggleViewerFullscreen() {
+  try {
+    if (document.fullscreenElement === viewer) {
+      await document.exitFullscreen?.();
+    } else {
+      await viewer.requestFullscreen?.();
+    }
+  } catch {
+    viewerZoomStatus.textContent = "当前浏览器无法进入全屏";
+  }
+  syncFullscreenControl();
+}
+
+function preloadAdjacentWorks(work) {
+  viewerState.preloads = [];
+  const target = findWorkIndex(work.id);
+  const adjacentIndexes = [
+    (target.index - 1 + target.collection.length) % target.collection.length,
+    (target.index + 1) % target.collection.length
+  ];
+
+  viewerState.preloads = adjacentIndexes.map((index) => {
+    const image = new window.Image();
+    image.src = `artworks/${target.collection[index].slug}-3200.webp`;
+    return image;
+  });
+}
+
+function loadViewerArtwork(work) {
+  const token = ++viewerState.loadToken;
+  const alt = `${work.titleZh}，${work.artist}，${work.displayDate}`;
+
+  viewerState.currentSlug = work.slug;
+  viewerStage.classList.remove("is-loaded");
+  viewerPreview.src = `artworks/${work.slug}-1600.webp`;
+  viewerPreview.alt = "";
+  viewerImage.alt = alt;
+  viewerImage.onload = () => {
+    if (token !== viewerState.loadToken) return;
+    viewerStage.classList.add("is-loaded");
+    requestAnimationFrame(() => resetViewerZoom(false));
+  };
+  viewerImage.onerror = () => {
+    if (token === viewerState.loadToken) {
+      viewerZoomStatus.textContent = "图像加载失败";
+    }
+  };
+  viewerImage.src = `artworks/${work.slug}-3200.webp`;
+
+  if (viewerImage.complete && viewerImage.naturalWidth > 0) {
+    viewerStage.classList.add("is-loaded");
+  }
+
+  resetViewerZoom(false);
+  preloadAdjacentWorks(work);
+}
+
 function openViewer(id) {
   const target = findWorkIndex(id);
   if (target.index < 0) return;
 
   state.selectedId = id;
-  state.lastFocusedElement = document.activeElement;
   const work = target.collection[target.index];
+  const wasOpen = viewer.open;
 
-  viewerImage.src = `artworks/${work.slug}-3200.webp`;
-  viewerImage.alt = `${work.titleZh}，${work.artist}，${work.displayDate}`;
+  if (!wasOpen) state.lastFocusedElement = document.activeElement;
+
   document.querySelector("[data-viewer-counter]").textContent =
     `${String(target.index + 1).padStart(2, "0")} / ${String(target.collection.length).padStart(2, "0")}`;
+  document.querySelector("[data-viewer-current]").textContent = work.titleZh;
   document.querySelector("[data-viewer-label]").textContent =
     `${work.medium} · ${work.origin}`;
   document.querySelector("[data-viewer-title]").textContent = work.titleZh;
@@ -438,9 +703,13 @@ function openViewer(id) {
   document.querySelector("[data-viewer-license]").href = work.licenseUrl;
   document.querySelector("[data-viewer-license]").textContent = work.license;
   document.querySelector("[data-viewer-attribution]").textContent = work.attribution;
-  viewerStage.classList.remove("is-zoomed");
+  loadViewerArtwork(work);
+  setViewerInfoOpen(false);
 
-  if (!viewer.open) viewer.showModal();
+  if (!wasOpen) {
+    viewer.showModal();
+    requestAnimationFrame(() => viewerStage.focus({ preventScroll: true }));
+  }
   document.body.classList.add("is-locked");
 }
 
@@ -448,7 +717,8 @@ function closeViewer() {
   if (!viewer.open) return;
   viewer.close();
   document.body.classList.remove("is-locked");
-  viewerStage.classList.remove("is-zoomed");
+  setViewerInfoOpen(false);
+  resetViewerZoom(false);
   state.lastFocusedElement?.focus();
 }
 
@@ -457,6 +727,146 @@ function moveViewer(direction) {
   const nextIndex =
     (target.index + direction + target.collection.length) % target.collection.length;
   openViewer(target.collection[nextIndex].id);
+}
+
+function pointerDistance(first, second) {
+  return Math.hypot(second.x - first.x, second.y - first.y);
+}
+
+function startViewerPinch() {
+  const points = [...viewerState.pointers.values()];
+  if (points.length < 2) return;
+  viewerState.gesture = {
+    type: "pinch",
+    lastDistance: Math.max(1, pointerDistance(points[0], points[1]))
+  };
+  viewerStage.classList.add("is-interacting");
+}
+
+function handleViewerPointerDown(event) {
+  if (event.pointerType === "mouse" && event.button !== 0) return;
+  viewerCanvas.setPointerCapture?.(event.pointerId);
+  viewerState.pointers.set(event.pointerId, {
+    x: event.clientX,
+    y: event.clientY,
+    pointerType: event.pointerType
+  });
+
+  if (viewerState.pointers.size === 1) {
+    viewerState.gesture = {
+      type: "pan",
+      startX: event.clientX,
+      startY: event.clientY,
+      originPanX: viewerState.panX,
+      originPanY: viewerState.panY,
+      deltaX: 0,
+      deltaY: 0,
+      moved: false,
+      touch: event.pointerType !== "mouse"
+    };
+    viewerStage.classList.add("is-interacting");
+  } else if (viewerState.pointers.size === 2) {
+    startViewerPinch();
+  }
+}
+
+function handleViewerPointerMove(event) {
+  const pointer = viewerState.pointers.get(event.pointerId);
+  if (!pointer) return;
+
+  pointer.x = event.clientX;
+  pointer.y = event.clientY;
+  const points = [...viewerState.pointers.values()];
+
+  if (points.length >= 2 && viewerState.gesture?.type === "pinch") {
+    const distance = Math.max(1, pointerDistance(points[0], points[1]));
+    const midpoint = {
+      clientX: (points[0].x + points[1].x) / 2,
+      clientY: (points[0].y + points[1].y) / 2
+    };
+    setViewerZoom(
+      viewerState.zoom * (distance / viewerState.gesture.lastDistance),
+      midpoint,
+      false
+    );
+    viewerState.gesture.lastDistance = distance;
+    viewerState.gesture.moved = true;
+    return;
+  }
+
+  if (points.length === 1 && viewerState.gesture?.type === "pan") {
+    const deltaX = event.clientX - viewerState.gesture.startX;
+    const deltaY = event.clientY - viewerState.gesture.startY;
+    viewerState.gesture.deltaX = deltaX;
+    viewerState.gesture.deltaY = deltaY;
+    viewerState.gesture.moved ||= Math.hypot(deltaX, deltaY) > 4;
+
+    if (viewerState.zoom > 1.01) {
+      viewerState.panX = viewerState.gesture.originPanX + deltaX;
+      viewerState.panY = viewerState.gesture.originPanY + deltaY;
+      applyViewerTransform(false);
+    }
+  }
+}
+
+function finishViewerPointer(event, allowSwipe) {
+  const gesture = viewerState.gesture;
+  const pointer = viewerState.pointers.get(event.pointerId);
+
+  if (
+    allowSwipe &&
+    gesture?.type === "pan" &&
+    gesture.touch &&
+    viewerState.zoom <= 1.01 &&
+    Math.abs(gesture.deltaX) > 72 &&
+    Math.abs(gesture.deltaY) < 56
+  ) {
+    moveViewer(gesture.deltaX < 0 ? 1 : -1);
+  }
+
+  viewerCanvas.releasePointerCapture?.(event.pointerId);
+  viewerState.pointers.delete(event.pointerId);
+
+  if (viewerState.pointers.size === 1) {
+    const [remaining] = viewerState.pointers.values();
+    viewerState.gesture = {
+      type: "pan",
+      startX: remaining.x,
+      startY: remaining.y,
+      originPanX: viewerState.panX,
+      originPanY: viewerState.panY,
+      deltaX: 0,
+      deltaY: 0,
+      moved: false,
+      touch: remaining.pointerType !== "mouse"
+    };
+  } else if (viewerState.pointers.size === 0) {
+    viewerState.gesture = null;
+    viewerStage.classList.remove("is-interacting");
+  }
+
+  if (pointer?.pointerType === "touch" && viewerState.zoom > 1.01) {
+    viewerZoomStatus.textContent =
+      `已放大至 ${Math.round(viewerState.zoom * 100)}%`;
+  }
+}
+
+function handleViewerWheel(event) {
+  event.preventDefault();
+  const scaleFactor = Math.exp(-event.deltaY * 0.0014);
+  setViewerZoom(
+    viewerState.zoom * scaleFactor,
+    { clientX: event.clientX, clientY: event.clientY },
+    false
+  );
+}
+
+function handleViewerDoubleClick(event) {
+  if (viewerState.zoom > 1.01) {
+    resetViewerZoom();
+  } else {
+    setViewerZoom(2.25, { clientX: event.clientX, clientY: event.clientY });
+  }
 }
 
 function updateSearchResults(query) {
@@ -519,9 +929,22 @@ document.addEventListener("click", (event) => {
   if (event.target.closest("[data-viewer-close]")) closeViewer();
   if (event.target.closest("[data-viewer-prev]")) moveViewer(-1);
   if (event.target.closest("[data-viewer-next]")) moveViewer(1);
-  if (event.target.closest("[data-viewer-zoom]")) {
-    viewerStage.classList.toggle("is-zoomed");
+  if (event.target.closest("[data-viewer-zoom-in]")) {
+    setViewerZoom(viewerState.zoom + 0.25);
   }
+  if (event.target.closest("[data-viewer-zoom-out]")) {
+    setViewerZoom(viewerState.zoom - 0.25);
+  }
+  if (event.target.closest("[data-viewer-fit], [data-viewer-reset]")) {
+    resetViewerZoom();
+  }
+  if (event.target.closest("[data-viewer-info-toggle]")) {
+    setViewerInfoOpen(!viewerInfo.classList.contains("is-open"), true);
+  }
+  if (event.target.closest("[data-viewer-info-close]")) {
+    setViewerInfoOpen(false, true);
+  }
+  if (event.target.closest("[data-viewer-fullscreen]")) toggleViewerFullscreen();
 
   if (event.target === viewer) closeViewer();
 });
@@ -553,12 +976,57 @@ searchBackdrop.addEventListener("click", (event) => {
 
 viewer.addEventListener("close", () => {
   document.body.classList.remove("is-locked");
+  viewerState.pointers.clear();
+  viewerState.gesture = null;
+  viewerStage.classList.remove("is-interacting");
 });
 
 viewer.addEventListener("keydown", (event) => {
-  if (event.key === "ArrowLeft") moveViewer(-1);
-  if (event.key === "ArrowRight") moveViewer(1);
+  if (event.key === "ArrowLeft" && !event.shiftKey) {
+    event.preventDefault();
+    moveViewer(-1);
+    return;
+  }
+  if (event.key === "ArrowRight" && !event.shiftKey) {
+    event.preventDefault();
+    moveViewer(1);
+    return;
+  }
+  if (event.shiftKey && event.key.startsWith("Arrow")) {
+    event.preventDefault();
+    const step = 90;
+    if (event.key === "ArrowLeft") panViewerBy(step, 0);
+    if (event.key === "ArrowRight") panViewerBy(-step, 0);
+    if (event.key === "ArrowUp") panViewerBy(0, step);
+    if (event.key === "ArrowDown") panViewerBy(0, -step);
+    return;
+  }
+  if (event.key === "+" || event.key === "=") {
+    event.preventDefault();
+    setViewerZoom(viewerState.zoom + 0.25);
+  }
+  if (event.key === "-" || event.key === "_") {
+    event.preventDefault();
+    setViewerZoom(viewerState.zoom - 0.25);
+  }
+  if (event.key === "0") {
+    event.preventDefault();
+    resetViewerZoom();
+  }
+  if (event.key.toLowerCase() === "f") toggleViewerFullscreen();
+  if (event.key.toLowerCase() === "i") {
+    setViewerInfoOpen(!viewerInfo.classList.contains("is-open"), true);
+  }
 });
+
+viewerCanvas.addEventListener("pointerdown", handleViewerPointerDown);
+viewerCanvas.addEventListener("pointermove", handleViewerPointerMove);
+viewerCanvas.addEventListener("pointerup", (event) => finishViewerPointer(event, true));
+viewerCanvas.addEventListener("pointercancel", (event) => finishViewerPointer(event, false));
+viewerCanvas.addEventListener("wheel", handleViewerWheel, { passive: false });
+viewerCanvas.addEventListener("dblclick", handleViewerDoubleClick);
+document.addEventListener("fullscreenchange", syncFullscreenControl);
+window.addEventListener("resize", () => setViewerInfoOpen(viewerInfo.classList.contains("is-open")));
 
 document.addEventListener("keydown", (event) => {
   const isTyping = ["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName);
