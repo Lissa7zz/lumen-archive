@@ -1,12 +1,11 @@
 import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
-import { artworks } from "../src/data/artworks.js";
+import { artworks } from "../src/data/catalog.js";
 
 const root = path.resolve(import.meta.dirname, "..");
 const sourceDir = path.join(root, "work", "artwork-sources");
 const outputDir = path.join(root, "public", "artworks");
-const manifestPath = path.join(root, "src", "data", "artworks.json");
 const userAgent = "LumenArchive/0.1 (open-source educational art archive)";
 
 async function exists(filePath) {
@@ -27,13 +26,24 @@ async function download(work) {
   const sourceUrl =
     `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodedTitle}` +
     "?width=3600";
-  const response = await fetch(sourceUrl, {
-    redirect: "follow",
-    headers: { "User-Agent": userAgent }
-  });
+  let response;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      response = await fetch(sourceUrl, {
+        redirect: "follow",
+        headers: { "User-Agent": userAgent }
+      });
+      if (response.ok) break;
+    } catch {
+      response = null;
+    }
+    await new Promise((resolve) => setTimeout(resolve, attempt * 1200));
+  }
 
-  if (!response.ok) {
-    throw new Error(`${work.titleZh}: source download failed (${response.status})`);
+  if (!response?.ok) {
+    throw new Error(
+      `${work.titleZh}: source download failed (${response?.status ?? "network error"})`
+    );
   }
 
   const buffer = Buffer.from(await response.arrayBuffer());
@@ -46,14 +56,23 @@ async function download(work) {
 }
 
 async function processArtwork(work) {
+  const outputPaths = [480, 1600, 3200].map((width) =>
+    path.join(outputDir, `${work.slug}-${width}.webp`)
+  );
+  if ((await Promise.all(outputPaths.map(exists))).every(Boolean)) {
+    console.log(`${work.slug}: up to date`);
+    return;
+  }
+
   const sourcePath = await download(work);
   const metadata = await sharp(sourcePath).metadata();
   if (!metadata.width || !metadata.height) {
     throw new Error(`${work.titleZh}: unable to read image dimensions`);
   }
 
-  for (const width of [1600, 3200]) {
+  for (const width of [480, 1600, 3200]) {
     const outputPath = path.join(outputDir, `${work.slug}-${width}.webp`);
+    const quality = width === 480 ? 76 : width === 1600 ? 80 : 84;
     const info = await sharp(sourcePath)
       .rotate()
       .resize({
@@ -63,7 +82,7 @@ async function processArtwork(work) {
         withoutEnlargement: true,
         kernel: sharp.kernel.lanczos3
       })
-      .webp({ quality: width === 3200 ? 84 : 80, effort: 5 })
+      .webp({ quality, effort: 5 })
       .toFile(outputPath);
 
     console.log(
@@ -83,20 +102,6 @@ for (const work of artworks) {
     process.exitCode = 1;
   }
 }
-
-const manifest = artworks.map(({ sourceFile, sourcePage, license, licenseUrl, attribution, ...work }) => ({
-  ...work,
-  source: {
-    file: sourceFile,
-    page: sourcePage,
-    license,
-    licenseUrl,
-    attribution
-  }
-}));
-
-await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
-console.log(`Wrote ${path.relative(root, manifestPath)}`);
 
 const licenseReadme = await readFile(path.join(root, "ATTRIBUTION.template.md"), "utf8");
 await writeFile(

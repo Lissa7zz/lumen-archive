@@ -2,12 +2,13 @@
 
 [![Deploy to GitHub Pages](https://github.com/Lissa7zz/lumen-archive/actions/workflows/deploy.yml/badge.svg)](https://github.com/Lissa7zz/lumen-archive/actions/workflows/deploy.yml)
 
-**Quick access: [Open Lumen Archive](https://lissa7zz.github.io/lumen-archive/)**
+**Quick access: [Open Lumen Archive](https://lissa7zz.github.io/lumen-archive/) ·
+[Browse the complete catalogue](https://lissa7zz.github.io/lumen-archive/archive.html)**
 
 # Lumen Archive
 
 Lumen Archive is an open-source, cross-media timeline of paintings, prints, and
-photography. The first collection brings together 12 works from 1434 to 1984,
+photography. The current catalogue brings together 55 works from 1434 to 1984,
 with local high-resolution images, source information, and a viewer designed
 for close inspection.
 
@@ -16,10 +17,12 @@ image-processing service.
 
 ## Highlights
 
-- 12 curated paintings, prints, and photographs
+- 55 paintings, prints, and photographs, with a 12-work homepage selection
 - Chronological exhibition wall and horizontal timeline
 - Search by title, artist, year, medium, or origin
-- 1600 px and 3200 px WebP viewing assets
+- Traditional catalogue with sorting, pagination, and deep-linkable page state
+- Six catalogue data chunks and a separate, lazily loaded search index
+- 480 px thumbnails, 1600 px previews, and 3200 px viewing assets
 - Zoom with the mouse wheel, buttons, double-click, or a touch pinch gesture
 - Drag to pan when enlarged, with touch swipe navigation at fit scale
 - Keyboard controls, fullscreen mode, and a mobile artwork-information drawer
@@ -40,6 +43,22 @@ image-processing service.
 
 On touch screens, pinch to zoom, drag with one finger after zooming, and swipe
 horizontally at fit scale to change works.
+
+## Catalogue
+
+The complete catalogue is available at `/archive.html`. It loads artwork
+metadata in six JSON chunks, reads a separate search index on demand, and
+shows 12 works per page. Sort order, search text, and page number are preserved
+in the URL for reloading or sharing.
+
+## Scaling path
+
+The static chunk architecture is appropriate for the current 55-work
+collection and can be extended to several hundred works. At the scale of
+thousands, image files should move to object storage behind a CDN, catalogue
+metadata should be served through a lightweight API or database, and search
+should move to a dedicated index rather than shipping the full dataset to the
+browser.
 
 ## Quick start
 
@@ -78,8 +97,10 @@ src/
   main.js               page rendering, search, timeline, and image viewer
   styles.css            responsive site and viewer styles
 scripts/
+  build-catalog.mjs     homepage data, JSON chunks, and search index generation
   fetch-artworks.mjs    artwork download and WebP generation
-public/artworks/        local display images
+public/data/            generated catalogue chunks and search index
+public/artworks/        local thumbnail, preview, and large images
 ```
 
 ## Artwork rights
@@ -88,8 +109,9 @@ The MIT License applies to the original project code and written content. It
 does not apply to the reproduced artworks.
 
 Most images in this collection are in the public domain. *The Second Sunset of
-the Day* is used under CC BY 2.0 and requires attribution. Source pages,
-licenses, and attribution strings are listed in
+the Day* is used under CC BY 2.0. The photograph of *The School of Athens* is
+used under CC BY-SA 4.0. Both require attribution and their respective license
+terms. Source pages, licenses, and attribution strings are listed in
 [ATTRIBUTION.md](ATTRIBUTION.md); additional third-party notices are in
 [NOTICE.md](NOTICE.md).
 

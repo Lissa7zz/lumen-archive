@@ -33,6 +33,7 @@ app.innerHTML = `
       <nav class="site-nav" aria-label="主导航">
         <a href="#collection">展墙</a>
         <a href="#timeline">时间轴</a>
+        <a href="archive.html">完整目录</a>
         <a href="#about">关于</a>
       </nav>
       <div class="header-tools">
@@ -109,11 +110,18 @@ app.innerHTML = `
         <div class="section-heading reveal">
           <div>
             <p class="eyebrow">Collection / 典藏</p>
-            <h2 id="collection-title">十二次凝视</h2>
+            <h2 id="collection-title">本期十二次凝视</h2>
           </div>
-          <p class="section-heading__intro">
-            绘画把想象凝固，摄影把现实留下。作品按年代进入同一条观看路径。
-          </p>
+          <div class="section-heading__aside">
+            <p class="section-heading__intro">
+              绘画把想象凝固，摄影把现实留下。本期精选 12 件，完整档案已扩充至 55 件。
+            </p>
+            <a class="archive-entry" href="archive.html">
+              <span>查看完整典藏</span>
+              <strong>55 件作品</strong>
+              <i data-lucide="arrow-right" aria-hidden="true"></i>
+            </a>
+          </div>
         </div>
 
         <div class="collection-toolbar reveal">
@@ -190,7 +198,7 @@ app.innerHTML = `
       <div class="footer-meta">
         <span>© 2026 Lumen Archive contributors</span>
         <span>Code: MIT</span>
-        <span>Images: Public Domain / CC BY 2.0</span>
+        <span>Images: Public Domain / CC</span>
       </div>
       <a class="icon-button" href="#top" aria-label="返回顶部" title="返回顶部">
         <i data-lucide="arrow-down" class="rotate-180" aria-hidden="true"></i>
@@ -418,8 +426,8 @@ function artworkCard(work, index) {
       <button class="artwork-card__button" type="button" data-open-work="${work.id}">
         <span class="artwork-card__image-wrap">
           <img
-            src="artworks/${work.slug}-1600.webp"
-            srcset="artworks/${work.slug}-1600.webp 1600w, artworks/${work.slug}-3200.webp 3200w"
+            src="artworks/${work.slug}-480.webp"
+            srcset="artworks/${work.slug}-480.webp 480w, artworks/${work.slug}-1600.webp 1600w, artworks/${work.slug}-3200.webp 3200w"
             sizes="(max-width: 720px) 92vw, (max-width: 1100px) 46vw, 38vw"
             alt="${work.titleZh}，${work.artist}，${work.displayDate}"
             loading="${index < 2 ? "eager" : "lazy"}"
@@ -463,7 +471,7 @@ function renderTimeline() {
           <span class="timeline-event__year">${work.year}</span>
           <span class="timeline-event__dot"><span></span></span>
           <span class="timeline-event__card">
-            <img src="artworks/${work.slug}-1600.webp" alt="" loading="lazy" />
+            <img src="artworks/${work.slug}-480.webp" alt="" loading="lazy" />
             <span class="timeline-event__content">
               <span class="timeline-event__number">${String(index + 1).padStart(2, "0")} / ${work.medium}</span>
               <strong>${work.titleZh}</strong>
@@ -872,7 +880,17 @@ function handleViewerDoubleClick(event) {
 function updateSearchResults(query) {
   const matches = worksByYear.filter((work) => matchesSearch(work, query)).slice(0, 6);
   if (!matches.length) {
-    searchResults.innerHTML = `<p class="search-results__empty">没有匹配的条目</p>`;
+    searchResults.innerHTML = `
+      <p class="search-results__empty">本期精选没有匹配条目</p>
+      <a
+        class="search-results__archive"
+        href="archive.html${query ? `?q=${encodeURIComponent(query)}` : ""}"
+      >
+        <span>在完整典藏中搜索</span>
+        <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </a>
+    `;
+    refreshIcons();
     return;
   }
 
@@ -883,7 +901,7 @@ function updateSearchResults(query) {
       .map(
         (work) => `
           <button type="button" class="search-result" data-open-work="${work.id}">
-            <img src="artworks/${work.slug}-1600.webp" alt="" />
+            <img src="artworks/${work.slug}-480.webp" alt="" />
             <span>
               <strong>${work.titleZh}</strong>
               <small>${work.artist} · ${work.displayDate}</small>
@@ -893,6 +911,13 @@ function updateSearchResults(query) {
         `
       )
       .join("")}
+    <a
+      class="search-results__archive"
+      href="archive.html${query ? `?q=${encodeURIComponent(query)}` : ""}"
+    >
+      <span>${query ? `在完整典藏中搜索“${query}”` : "浏览完整典藏 · 55 件作品"}</span>
+      <i data-lucide="arrow-right" aria-hidden="true"></i>
+    </a>
   `;
   refreshIcons();
 }
@@ -953,6 +978,11 @@ globalSearch.addEventListener("input", () => searchWorks(globalSearch.value));
 globalSearch.addEventListener("click", openSearch);
 globalSearch.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
+    if (globalSearch.value.trim()) {
+      window.location.href =
+        `archive.html?q=${encodeURIComponent(globalSearch.value.trim())}`;
+      return;
+    }
     document.querySelector("#collection").scrollIntoView({ behavior: "smooth" });
     closeSearch();
   }
@@ -964,6 +994,11 @@ searchPanelInput.addEventListener("input", () => {
 });
 searchPanelInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
+    if (searchPanelInput.value.trim()) {
+      window.location.href =
+        `archive.html?q=${encodeURIComponent(searchPanelInput.value.trim())}`;
+      return;
+    }
     closeSearch();
     document.querySelector("#collection").scrollIntoView({ behavior: "smooth" });
   }

@@ -1,0 +1,44 @@
+{
+  "total": 55,
+  "curatorial": 12,
+  "pageSize": 12,
+  "chunkSize": 10,
+  "chunks": [
+    {
+      "file": "data/chunks/works-001.json",
+      "count": 10,
+      "firstYear": 1434,
+      "lastYear": 1620
+    },
+    {
+      "file": "data/chunks/works-002.json",
+      "count": 10,
+      "firstYear": 1642,
+      "lastYear": 1821
+    },
+    {
+      "file": "data/chunks/works-003.json",
+      "count": 10,
+      "firstYear": 1823,
+      "lastYear": 1863
+    },
+    {
+      "file": "data/chunks/works-004.json",
+      "count": 10,
+      "firstYear": 1872,
+      "lastYear": 1888
+    },
+    {
+      "file": "data/chunks/works-005.json",
+      "count": 10,
+      "firstYear": 1888,
+      "lastYear": 1913
+    },
+    {
+      "file": "data/chunks/works-006.json",
+      "count": 5,
+      "firstYear": 1915,
+      "lastYear": 1984
+    }
+  ]
+}

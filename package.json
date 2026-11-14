@@ -1,7 +1,7 @@
 {
   "name": "lumen-archive",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "description": "A curated, open-source timeline of iconic paintings and photographs.",
   "homepage": "https://lissa7zz.github.io/lumen-archive/",
@@ -14,6 +14,10 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "prepare:data": "node scripts/build-catalog.mjs",
+    "predev": "npm run prepare:data",
+    "prebuild": "npm run prepare:data",
+    "prefetch:artworks": "npm run prepare:data",
     "fetch:artworks": "node scripts/fetch-artworks.mjs"
   },
   "dependencies": {
