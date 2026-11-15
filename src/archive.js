@@ -42,7 +42,7 @@ app.innerHTML = `
 
     <main>
       <section class="archive-hero">
-        <div class="archive-hero__index" aria-hidden="true">110</div>
+        <div class="archive-hero__index" data-hero-count aria-hidden="true">500</div>
         <div class="archive-hero__copy">
           <p class="eyebrow">Complete Collection / 完整典藏</p>
           <h1>五百年视觉档案</h1>
@@ -52,9 +52,9 @@ app.innerHTML = `
           </p>
         </div>
         <dl class="archive-stats">
-          <div><dt>作品</dt><dd data-total-count>110</dd></div>
-          <div><dt>年代跨度</dt><dd><span data-year-span>563</span> 年</dd></div>
-          <div><dt>数据分块</dt><dd data-chunk-count>11</dd></div>
+          <div><dt>作品</dt><dd data-total-count>500</dd></div>
+          <div><dt>年代跨度</dt><dd><span data-year-span>600</span> 年</dd></div>
+          <div><dt>数据分块</dt><dd data-chunk-count>20</dd></div>
         </dl>
       </section>
 
@@ -236,6 +236,7 @@ async function loadCatalog() {
   state.works = chunkResults.flat();
   state.perPage = manifest.pageSize;
   document.querySelector("[data-total-count]").textContent = manifest.total;
+  document.querySelector("[data-hero-count]").textContent = manifest.total;
   document.querySelector("[data-chunk-count]").textContent =
     String(manifest.chunks.length).padStart(2, "0");
   document.querySelector("[data-year-span]").textContent = manifest.yearSpan;
@@ -444,7 +445,7 @@ function openViewer(id) {
   state.viewerId = id;
   viewerImage.src = `artworks/${work.slug}-1600.webp`;
   viewerImage.alt = `${work.titleZh}，${work.artist}，${work.displayDate}`;
-  viewerFull.href = `artworks/${work.slug}-3200.webp`;
+  viewerFull.href = `artworks/${work.slug}-${work.detailWidth ?? 3200}.webp`;
   document.querySelector("[data-archive-viewer-counter]").textContent =
     `${String(index + 1).padStart(2, "0")} / ${String(state.filteredWorks.length).padStart(2, "0")}`;
   document.querySelector("[data-archive-viewer-source]").href = work.sourcePage;

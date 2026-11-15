@@ -1,4 +1,4 @@
-import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
+import { mkdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 import { artworks } from "../src/data/catalog.js";
@@ -7,6 +7,13 @@ const root = path.resolve(import.meta.dirname, "..");
 const sourceDir = path.join(root, "work", "artwork-sources");
 const outputDir = path.join(root, "public", "artworks");
 const userAgent = "LumenArchive/0.1 (open-source educational art archive)";
+const supplementalWorks = JSON.parse(
+  await readFile(
+    path.join(root, "src", "data", "world-collection.json"),
+    "utf8"
+  )
+);
+const allArtworks = [...artworks, ...supplementalWorks];
 
 async function exists(filePath) {
   try {
@@ -24,8 +31,9 @@ async function download(work) {
   // the MediaWiki API for another large metadata response.
   const encodedTitle = encodeURIComponent(work.sourceFile);
   const sourceUrl =
-    `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodedTitle}` +
-    "?width=3600";
+    work.sourceImageUrl ??
+    (`https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodedTitle}` +
+      "?width=3600");
   const thumbnailUrl =
     "https://commons.wikimedia.org/w/thumb.php?f=" +
     encodeURIComponent(work.sourceFile.replaceAll(" ", "_")) +
@@ -76,7 +84,8 @@ async function download(work) {
 }
 
 async function processArtwork(work) {
-  const outputPaths = [480, 1600, 3200].map((width) =>
+  const imageWidths = work.imageWidths ?? [480, 1600, 3200];
+  const outputPaths = imageWidths.map((width) =>
     path.join(outputDir, `${work.slug}-${width}.webp`)
   );
   if ((await Promise.all(outputPaths.map(exists))).every(Boolean)) {
@@ -90,7 +99,7 @@ async function processArtwork(work) {
     throw new Error(`${work.titleZh}: unable to read image dimensions`);
   }
 
-  for (const width of [480, 1600, 3200]) {
+  for (const width of imageWidths) {
     const outputPath = path.join(outputDir, `${work.slug}-${width}.webp`);
     const quality = width === 480 ? 76 : width === 1600 ? 80 : 84;
     const info = await sharp(sourcePath)
@@ -109,12 +118,14 @@ async function processArtwork(work) {
       `${work.slug}-${width}.webp  ${info.width}×${info.height}  ${Math.round(info.size / 1024)} KB`
     );
   }
+
+  if (work.sourceImageUrl) await unlink(sourcePath).catch(() => {});
 }
 
 await mkdir(sourceDir, { recursive: true });
 await mkdir(outputDir, { recursive: true });
 
-for (const work of artworks) {
+for (const work of allArtworks) {
   try {
     await processArtwork(work);
   } catch (error) {
@@ -128,11 +139,18 @@ await writeFile(
   path.join(root, "ATTRIBUTION.md"),
   licenseReadme.replace(
     "{{ARTWORK_LIST}}",
-    artworks
+    allArtworks
       .map(
-        (work, index) =>
-          `${index + 1}. **${work.titleZh} / ${work.titleEn}** — ${work.artist}, ${work.displayDate}. ` +
-          `${work.license}. [Wikimedia Commons](${work.sourcePage}). ${work.attribution}.`
+        (work, index) => {
+          const title =
+            work.titleZh === work.titleEn
+              ? work.titleEn
+              : `${work.titleZh} / ${work.titleEn}`;
+          return (
+            `${index + 1}. **${title}** — ${work.artist}, ${work.displayDate}. ` +
+            `${work.license}. [原始档案](${work.sourcePage}). ${work.attribution}.`
+          );
+        }
       )
       .join("\n")
   )

@@ -1,4 +1,4 @@
-import { mkdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import {
   artworks,
@@ -10,9 +10,13 @@ const dataDir = path.join(root, "public", "data");
 const chunkDir = path.join(dataDir, "chunks");
 const curatedPath = path.join(root, "src", "data", "artworks.js");
 const pageSize = 12;
-const chunkSize = 10;
+const chunkSize = 25;
+const supplementalWorks = JSON.parse(
+  await readFile(path.join(root, "src", "data", "world-collection.json"), "utf8")
+);
+const allArtworks = [...artworks, ...supplementalWorks];
 
-const sortedWorks = [...artworks].sort(
+const sortedWorks = [...allArtworks].sort(
   (first, second) =>
     first.year - second.year ||
     first.titleZh.localeCompare(second.titleZh, "zh-CN")

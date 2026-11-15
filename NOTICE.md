@@ -18,6 +18,7 @@ The collection contains public-domain works and three openly licensed images:
 - *The Second Sunset of the Day* by M. McBey, CC BY 2.0.
 - The photographed *School of Athens* fresco by Ank Kumar, CC BY-SA 4.0.
 - The photographed Sputnik replica, dedicated to the public domain under CC0.
+- Works sourced through the Cleveland Museum of Art Open Access program, CC0.
 
 The complete work list, source pages, licenses, and attribution strings are in
 [ATTRIBUTION.md](ATTRIBUTION.md).

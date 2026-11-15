@@ -2,7 +2,9 @@
 
 本项目站点的源代码使用 MIT 许可。以下作品图像不属于 MIT 许可范围，各自保留作品本身的公共领域状态或 Creative Commons 许可。
 
-图像通过 Wikimedia Commons 获取，并在 `npm run fetch:artworks` 运行时由脚本生成 1600px 与 3200px 两档 WebP 展示文件。高分辨率原始文件可以从每项链接进入 Wikimedia Commons 查看或下载。
+图像通过 Wikimedia Commons 与克利夫兰艺术博物馆开放馆藏获取，并在
+`npm run fetch:artworks` 运行时生成 WebP 展示文件。Wikimedia 作品通常保留 480px、
+1600px 与 3200px 三档图像；克利夫兰新增作品使用 480px 与 1600px 两档。
 
 ## 作品列表
 

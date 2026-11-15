@@ -8,8 +8,9 @@
 
 # Lumen Archive
 
-Lumen Archive is an open-source, cross-media timeline of paintings, prints, and
-photography. The current catalogue brings together 110 works from 1434 to 1997,
+Lumen Archive is an open-source, cross-media timeline of art, objects,
+photography, and historical images. The current catalogue brings together 500
+works from 1400 to 2000,
 with local high-resolution images, source information, and a viewer designed
 for close inspection.
 
@@ -18,17 +19,17 @@ image-processing service.
 
 ## Highlights
 
-- 110 paintings, prints, and photographs, with a 12-work homepage selection
+- 500 works from Asia, Europe, Africa, the Americas, and Oceania
 - Chronological exhibition wall and a scroll-driven timeline
 - Search by title, artist, year, medium, or origin
 - Traditional catalogue with sorting, pagination, and deep-linkable page state
-- Dedicated scrollable chronology wall covering all 110 works
+- Dedicated scrollable chronology wall covering all 500 works
 - Chunked catalogue data and a separate, lazily loaded search index
-- 480 px thumbnails, 1600 px previews, and 3200 px viewing assets
+- 480 px thumbnails, 1600 px previews, and 3200 px assets for selected works
 - Zoom with the mouse wheel, buttons, double-click, or a touch pinch gesture
 - Drag to pan when enlarged, with touch swipe navigation at fit scale
 - Keyboard controls, fullscreen mode, and a mobile artwork-information drawer
-- Direct links to the original Wikimedia Commons records
+- Direct links to original Wikimedia Commons and museum records
 - Per-work licensing and attribution documentation
 
 ## Viewer controls
@@ -49,7 +50,7 @@ horizontally at fit scale to change works.
 ## Catalogue
 
 The complete catalogue is available at `/archive.html`. It loads artwork
-metadata in eleven JSON chunks, reads a separate search index on demand, and
+metadata in twenty JSON chunks, reads a separate search index on demand, and
 shows 12 works per page. Sort order, search text, and page number are preserved
 in the URL for reloading or sharing.
 
@@ -62,8 +63,9 @@ scrolled.
 
 ## Scaling path
 
-The static chunk architecture is appropriate for the current 110-work
-collection and can be extended to several hundred works. At the scale of
+The static chunk architecture supports the current 500-work collection.
+New Cleveland Museum of Art works use a two-tier 480/1600 image pipeline to
+keep deployment size manageable. At the scale of
 thousands, image files should move to object storage behind a CDN, catalogue
 metadata should be served through a lightweight API or database, and search
 should move to a dedicated index rather than shipping the full dataset to the
@@ -87,22 +89,25 @@ npm run preview
 
 ## Artwork assets
 
-Work metadata and source records are stored in `src/data/artworks.js`. The
-image pipeline downloads high-resolution files from Wikimedia Commons and
-generates the local WebP variants:
+Curated homepage records live in `src/data/artworks.js`; the generated world
+collection lives in `src/data/world-collection.json`. The image pipeline pulls
+from Wikimedia Commons and the Cleveland Museum of Art Open Access CDN, then
+generates local WebP variants:
 
 ```bash
 npm run fetch:artworks
 ```
 
-Downloaded source files are cached under `work/artwork-sources/` and are not
-committed. Deployable images are written to `public/artworks/`.
+Wikimedia source files are cached under `work/artwork-sources/` and are not
+committed. Cleveland source files are processed as temporary downloads.
+Deployable images are written to `public/artworks/`.
 
 ## Project layout
 
 ```text
 src/
   data/artworks.js      artwork records and source links
+  data/world-collection.json  generated CC0 museum records
   main.js               page rendering, search, timeline, and image viewer
   styles.css            responsive site and viewer styles
   timeline.js           full chronology loading and scroll tracking
@@ -110,6 +115,7 @@ src/
 scripts/
   build-catalog.mjs     homepage data, JSON chunks, and search index generation
   fetch-artworks.mjs    artwork download and WebP generation
+  fetch-cleveland.mjs   CC0 world-art metadata refresh
 public/data/            generated catalogue chunks and search index
 public/artworks/        local thumbnail, preview, and large images
 ```
@@ -122,7 +128,8 @@ does not apply to the reproduced artworks.
 Most images in this collection are in the public domain. *The Second Sunset of
 the Day* is used under CC BY 2.0. The photograph of *The School of Athens* is
 used under CC BY-SA 4.0. The Sputnik photograph is dedicated to the public
-domain under CC0. These images require the attribution recorded for each work.
+domain under CC0, and Cleveland Museum of Art works come from its CC0 open
+access program. These images require the attribution recorded for each work.
 Source pages, licenses, and attribution strings are listed in
 [ATTRIBUTION.md](ATTRIBUTION.md); additional third-party notices are in
 [NOTICE.md](NOTICE.md).
