@@ -3,7 +3,8 @@
 [![Deploy to GitHub Pages](https://github.com/Lissa7zz/lumen-archive/actions/workflows/deploy.yml/badge.svg)](https://github.com/Lissa7zz/lumen-archive/actions/workflows/deploy.yml)
 
 **Quick access: [Open Lumen Archive](https://lissa7zz.github.io/lumen-archive/) ·
-[Browse the complete catalogue](https://lissa7zz.github.io/lumen-archive/archive.html)**
+[Browse the complete catalogue](https://lissa7zz.github.io/lumen-archive/archive.html) ·
+[Follow the complete timeline](https://lissa7zz.github.io/lumen-archive/timeline.html)**
 
 # Lumen Archive
 
@@ -18,9 +19,10 @@ image-processing service.
 ## Highlights
 
 - 110 paintings, prints, and photographs, with a 12-work homepage selection
-- Chronological exhibition wall and horizontal timeline
+- Chronological exhibition wall and a scroll-driven timeline
 - Search by title, artist, year, medium, or origin
 - Traditional catalogue with sorting, pagination, and deep-linkable page state
+- Dedicated scrollable chronology wall covering all 110 works
 - Chunked catalogue data and a separate, lazily loaded search index
 - 480 px thumbnails, 1600 px previews, and 3200 px viewing assets
 - Zoom with the mouse wheel, buttons, double-click, or a touch pinch gesture
@@ -50,6 +52,13 @@ The complete catalogue is available at `/archive.html`. It loads artwork
 metadata in eleven JSON chunks, reads a separate search index on demand, and
 shows 12 works per page. Sort order, search text, and page number are preserved
 in the URL for reloading or sharing.
+
+## Timeline
+
+The dedicated timeline at `/timeline.html` displays every work in five
+chronological eras without pagination or a horizontal slider. A sticky
+year rail follows the current work, while thumbnails load lazily as the wall is
+scrolled.
 
 ## Scaling path
 
@@ -96,6 +105,8 @@ src/
   data/artworks.js      artwork records and source links
   main.js               page rendering, search, timeline, and image viewer
   styles.css            responsive site and viewer styles
+  timeline.js           full chronology loading and scroll tracking
+  timeline.css          five-era chronology wall
 scripts/
   build-catalog.mjs     homepage data, JSON chunks, and search index generation
   fetch-artworks.mjs    artwork download and WebP generation

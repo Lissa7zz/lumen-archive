@@ -26,6 +26,7 @@ app.innerHTML = `
       <nav class="archive-header__nav" aria-label="主导航">
         <a href="./">本期策展</a>
         <a href="archive.html" aria-current="page">完整典藏</a>
+        <a href="timeline.html">时间轴</a>
       </nav>
       <a
         class="icon-button archive-github"

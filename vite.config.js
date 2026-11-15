@@ -14,7 +14,8 @@ export default defineConfig(() => {
       rollupOptions: {
         input: {
           main: path.resolve(root, "index.html"),
-          archive: path.resolve(root, "archive.html")
+          archive: path.resolve(root, "archive.html"),
+          timeline: path.resolve(root, "timeline.html")
         }
       },
       ...(skipEsbuild ? { minify: false, cssMinify: false } : {})

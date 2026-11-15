@@ -17,6 +17,7 @@ import {
   X
 } from "lucide";
 import { featuredArtwork, worksByYear } from "./data/artworks.js";
+import { eras } from "./data/eras.js";
 
 const app = document.querySelector("#app");
 
@@ -32,7 +33,7 @@ app.innerHTML = `
       </a>
       <nav class="site-nav" aria-label="主导航">
         <a href="#collection">展墙</a>
-        <a href="#timeline">时间轴</a>
+        <a href="timeline.html">时间轴</a>
         <a href="archive.html">完整目录</a>
         <a href="#about">关于</a>
       </nav>
@@ -151,18 +152,42 @@ app.innerHTML = `
         <div class="timeline-heading reveal">
           <div>
             <p class="eyebrow">Chronology / 时间轴</p>
-            <h2 id="timeline-title">五百年，一束光</h2>
+            <h2 id="timeline-title">时间不是一条线</h2>
           </div>
-          <div class="timeline-controls">
-            <button class="icon-button" type="button" data-timeline-prev aria-label="向前浏览时间轴">
-              <i data-lucide="arrow-left" aria-hidden="true"></i>
-            </button>
-            <button class="icon-button" type="button" data-timeline-next aria-label="向后浏览时间轴">
+          <div class="timeline-heading__aside">
+            <p>
+              从银版摄影到火星全景，110 件作品分布在五个时代。完整时间轴采用可滚动的年代展墙，
+              不用翻页，也没有横向滑块。
+            </p>
+            <a class="timeline-entry" href="timeline.html">
+              <span>进入完整时间轴</span>
+              <strong>110 件 · 563 年</strong>
               <i data-lucide="arrow-right" aria-hidden="true"></i>
-            </button>
+            </a>
           </div>
         </div>
-        <div class="timeline-track reveal" data-timeline></div>
+        <div class="timeline-preview reveal" aria-label="五个历史阶段">
+          ${eras
+            .map(
+              (era) => `
+                <a class="timeline-era-tile" href="timeline.html#era-${era.id}">
+                  <img
+                    src="artworks/${era.representative}-480.webp"
+                    alt=""
+                    loading="lazy"
+                  />
+                  <span class="timeline-era-tile__veil"></span>
+                  <span class="timeline-era-tile__index">${era.numeral}</span>
+                  <span class="timeline-era-tile__copy">
+                    <small>${era.range} · ${era.count} 件</small>
+                    <strong>${era.title}</strong>
+                  </span>
+                  <i data-lucide="arrow-right" aria-hidden="true"></i>
+                </a>
+              `
+            )
+            .join("")}
+        </div>
       </section>
 
       <section class="about" id="about" aria-labelledby="about-title">
@@ -172,7 +197,7 @@ app.innerHTML = `
         </div>
         <div class="about__copy reveal">
           <p>
-            光迹美术馆是一个开源的非商业艺术索引。首版选取人类观看史中的十二个坐标，把高清图像、作品信息、创作背景与授权来源放在同一个页面里。
+            光迹美术馆是一个开源的非商业艺术索引。当前档案收录 110 件作品，把高清图像、作品信息、创作背景与授权来源放在同一个可检索体系中。
           </p>
           <p>
             图像均来自 Wikimedia Commons、美国国会图书馆或 NASA 等公共档案，并尽量使用高分辨率版本。代码以 MIT 许可开放，作品图像遵循各自的公共领域或 Creative Commons 许可。
@@ -351,7 +376,6 @@ function refreshIcons() {
 refreshIcons();
 
 const gallery = document.querySelector("[data-gallery]");
-const timeline = document.querySelector("[data-timeline]");
 const viewer = document.querySelector("[data-viewer]");
 const viewerImage = document.querySelector("[data-viewer-image]");
 const viewerPreview = document.querySelector("[data-viewer-preview]");
@@ -461,27 +485,6 @@ function renderGallery() {
   emptyState.hidden = state.visibleWorks.length > 0;
   gallery.hidden = state.visibleWorks.length === 0;
   refreshIcons();
-}
-
-function renderTimeline() {
-  timeline.innerHTML = worksByYear
-    .map(
-      (work, index) => `
-        <button class="timeline-event" type="button" data-open-work="${work.id}">
-          <span class="timeline-event__year">${work.year}</span>
-          <span class="timeline-event__dot"><span></span></span>
-          <span class="timeline-event__card">
-            <img src="artworks/${work.slug}-480.webp" alt="" loading="lazy" />
-            <span class="timeline-event__content">
-              <span class="timeline-event__number">${String(index + 1).padStart(2, "0")} / ${work.medium}</span>
-              <strong>${work.titleZh}</strong>
-              <small>${work.artist}</small>
-            </span>
-          </span>
-        </button>
-      `
-    )
-    .join("");
 }
 
 function setFilter(filter) {
@@ -1077,21 +1080,7 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-let timelineAnimationFrame;
-document.querySelector("[data-timeline-prev]").addEventListener("click", () => {
-  timeline.scrollBy({
-    left: -Math.min(520, timeline.clientWidth * 0.72),
-    behavior: "smooth"
-  });
-});
-document.querySelector("[data-timeline-next]").addEventListener("click", () => {
-  timeline.scrollBy({
-    left: Math.min(520, timeline.clientWidth * 0.72),
-    behavior: "smooth"
-  });
-});
-
-let lastScrollY = window.scrollY;
+let scrollAnimationFrame;
 window.addEventListener(
   "scroll",
   () => {
@@ -1099,14 +1088,13 @@ window.addEventListener(
     header.classList.toggle("is-scrolled", scrollY > 32);
 
     if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      cancelAnimationFrame(timelineAnimationFrame);
-      timelineAnimationFrame = requestAnimationFrame(() => {
+      cancelAnimationFrame(scrollAnimationFrame);
+      scrollAnimationFrame = requestAnimationFrame(() => {
         const heroImage = document.querySelector("[data-hero-image]");
         const heroShift = Math.min(scrollY * 0.08, 80);
         heroImage.style.transform = `scale(1.04) translateY(${heroShift}px)`;
       });
     }
-    lastScrollY = scrollY;
   },
   { passive: true }
 );
@@ -1132,5 +1120,4 @@ if ("requestIdleCallback" in window) {
 }
 
 renderGallery();
-renderTimeline();
 updateSearchResults("");

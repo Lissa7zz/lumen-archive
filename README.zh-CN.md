@@ -3,7 +3,8 @@
 [![GitHub Pages 部署](https://github.com/Lissa7zz/lumen-archive/actions/workflows/deploy.yml/badge.svg)](https://github.com/Lissa7zz/lumen-archive/actions/workflows/deploy.yml)
 
 **快速入口：[打开光迹美术馆](https://lissa7zz.github.io/lumen-archive/) ·
-[浏览完整典藏](https://lissa7zz.github.io/lumen-archive/archive.html)**
+[浏览完整典藏](https://lissa7zz.github.io/lumen-archive/archive.html) ·
+[进入完整时间轴](https://lissa7zz.github.io/lumen-archive/timeline.html)**
 
 # 光迹美术馆 / Lumen Archive
 
@@ -16,9 +17,10 @@
 ## 项目内容
 
 - 110 件绘画、版画与摄影作品，首页保留 12 件策展精选
-- 按年代排列的典藏展墙与横向时间轴
+- 按年代排列的典藏展墙与滚动式完整时间轴
 - 按标题、艺术家、年代、媒介或地域搜索
 - 传统图录分页，支持排序、搜索与可分享的页面状态链接
+- 独立可滚动时间轴，完整展示全部 110 件作品
 - 分块加载的作品数据与独立按需加载的搜索索引
 - 480 px 缩略图、1600 px 预览图与 3200 px 高清图
 - 支持滚轮、按钮、双击与触屏双指缩放
@@ -46,6 +48,11 @@
 完整图录位于 `/archive.html`，每页展示 12 件作品。页面按需载入 11 个 JSON
 作品数据块，搜索时再单独读取索引。搜索词、排序方式与页码会写入 URL，刷新或分享
 后可以恢复到同一状态。
+
+## 完整时间轴
+
+`/timeline.html` 用五个历史阶段展示全部作品，不使用分页或横向滑块。左侧年代
+轨道会随滚动更新当前年份与作品，缩略图按需懒加载。
 
 ## 扩展路线
 
@@ -88,6 +95,8 @@ src/
   data/artworks.js      作品信息与来源
   main.js               页面渲染、搜索、时间轴与图像查看器
   styles.css            响应式站点与查看器样式
+  timeline.js           完整时间轴数据加载与滚动追踪
+  timeline.css          五阶段年代展墙样式
 scripts/
   build-catalog.mjs     首页数据、分块 JSON 与搜索索引生成
   fetch-artworks.mjs    图像下载与 WebP 生成
