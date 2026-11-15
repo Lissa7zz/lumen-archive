@@ -1,129 +1,87 @@
 {
-  "total": 500,
+  "total": 322,
   "curatorial": 12,
-  "yearSpan": 600,
+  "yearSpan": 563,
   "pageSize": 12,
   "chunkSize": 25,
   "chunks": [
     {
       "file": "data/chunks/works-001.json",
       "count": 25,
-      "firstYear": 1400,
-      "lastYear": 1486
+      "firstYear": 1434,
+      "lastYear": 1540
     },
     {
       "file": "data/chunks/works-002.json",
       "count": 25,
-      "firstYear": 1488,
-      "lastYear": 1533
+      "firstYear": 1541,
+      "lastYear": 1596
     },
     {
       "file": "data/chunks/works-003.json",
       "count": 25,
-      "firstYear": 1534,
-      "lastYear": 1586
+      "firstYear": 1600,
+      "lastYear": 1647
     },
     {
       "file": "data/chunks/works-004.json",
       "count": 25,
-      "firstYear": 1586,
-      "lastYear": 1613
+      "firstYear": 1647,
+      "lastYear": 1701
     },
     {
       "file": "data/chunks/works-005.json",
       "count": 25,
-      "firstYear": 1613,
-      "lastYear": 1648
+      "firstYear": 1703,
+      "lastYear": 1790
     },
     {
       "file": "data/chunks/works-006.json",
       "count": 25,
-      "firstYear": 1650,
-      "lastYear": 1679
+      "firstYear": 1791,
+      "lastYear": 1830
     },
     {
       "file": "data/chunks/works-007.json",
       "count": 25,
-      "firstYear": 1684,
-      "lastYear": 1710
+      "firstYear": 1831,
+      "lastYear": 1855
     },
     {
       "file": "data/chunks/works-008.json",
       "count": 25,
-      "firstYear": 1715,
-      "lastYear": 1758
+      "firstYear": 1856,
+      "lastYear": 1865
     },
     {
       "file": "data/chunks/works-009.json",
       "count": 25,
-      "firstYear": 1760,
-      "lastYear": 1785
+      "firstYear": 1865,
+      "lastYear": 1878
     },
     {
       "file": "data/chunks/works-010.json",
       "count": 25,
-      "firstYear": 1788,
-      "lastYear": 1823
+      "firstYear": 1879,
+      "lastYear": 1893
     },
     {
       "file": "data/chunks/works-011.json",
       "count": 25,
-      "firstYear": 1825,
-      "lastYear": 1848
+      "firstYear": 1895,
+      "lastYear": 1912
     },
     {
       "file": "data/chunks/works-012.json",
       "count": 25,
-      "firstYear": 1849,
-      "lastYear": 1857
-    },
-    {
-      "file": "data/chunks/works-013.json",
-      "count": 25,
-      "firstYear": 1857,
-      "lastYear": 1865
-    },
-    {
-      "file": "data/chunks/works-014.json",
-      "count": 25,
-      "firstYear": 1866,
-      "lastYear": 1876
-    },
-    {
-      "file": "data/chunks/works-015.json",
-      "count": 25,
-      "firstYear": 1877,
-      "lastYear": 1887
-    },
-    {
-      "file": "data/chunks/works-016.json",
-      "count": 25,
-      "firstYear": 1887,
-      "lastYear": 1893
-    },
-    {
-      "file": "data/chunks/works-017.json",
-      "count": 25,
-      "firstYear": 1895,
-      "lastYear": 1905
-    },
-    {
-      "file": "data/chunks/works-018.json",
-      "count": 25,
-      "firstYear": 1906,
-      "lastYear": 1920
-    },
-    {
-      "file": "data/chunks/works-019.json",
-      "count": 25,
-      "firstYear": 1921,
+      "firstYear": 1913,
       "lastYear": 1957
     },
     {
-      "file": "data/chunks/works-020.json",
-      "count": 25,
+      "file": "data/chunks/works-013.json",
+      "count": 22,
       "firstYear": 1958,
-      "lastYear": 2000
+      "lastYear": 1997
     }
   ]
 }

@@ -8,9 +8,9 @@
 
 # Lumen Archive
 
-Lumen Archive is an open-source, cross-media timeline of art, objects,
-photography, and historical images. The current catalogue brings together 500
-works from 1400 to 2000,
+Lumen Archive is an open-source, cross-media timeline of paintings, prints,
+photography, and historical images. The current catalogue brings together 322
+works from 1434 to 1997,
 with local high-resolution images, source information, and a viewer designed
 for close inspection.
 
@@ -19,11 +19,11 @@ image-processing service.
 
 ## Highlights
 
-- 500 works from Asia, Europe, Africa, the Americas, and Oceania
+- 322 works from Asia, Europe, Africa, and the Americas
 - Chronological exhibition wall and a scroll-driven timeline
 - Search by title, artist, year, medium, or origin
 - Traditional catalogue with sorting, pagination, and deep-linkable page state
-- Dedicated scrollable chronology wall covering all 500 works
+- Dedicated scrollable chronology wall covering all 322 works
 - Chunked catalogue data and a separate, lazily loaded search index
 - 480 px thumbnails, 1600 px previews, and 3200 px assets for selected works
 - Zoom with the mouse wheel, buttons, double-click, or a touch pinch gesture
@@ -50,7 +50,7 @@ horizontally at fit scale to change works.
 ## Catalogue
 
 The complete catalogue is available at `/archive.html`. It loads artwork
-metadata in twenty JSON chunks, reads a separate search index on demand, and
+metadata in thirteen JSON chunks, reads a separate search index on demand, and
 shows 12 works per page. Sort order, search text, and page number are preserved
 in the URL for reloading or sharing.
 
@@ -63,7 +63,7 @@ scrolled.
 
 ## Scaling path
 
-The static chunk architecture supports the current 500-work collection.
+The static chunk architecture supports the current 322-work collection.
 New Cleveland Museum of Art works use a two-tier 480/1600 image pipeline to
 keep deployment size manageable. At the scale of
 thousands, image files should move to object storage behind a CDN, catalogue

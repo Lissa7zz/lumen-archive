@@ -3,10 +3,10 @@ export const eras = [
     id: "faith",
     numeral: "I",
     title: "信仰、宫廷与秩序",
-    range: "1400–1599",
-    start: 1400,
+    range: "1434–1599",
+    start: 1434,
     end: 1599,
-    count: 90,
+    count: 50,
     representative: "birth-of-venus",
     summary: "宗教图像、宫廷肖像与理想化的古典空间，构成了近代视觉秩序的开端。"
   },
@@ -17,7 +17,7 @@ export const eras = [
     range: "1600–1799",
     start: 1600,
     end: 1799,
-    count: 145,
+    count: 79,
     representative: "night-watch",
     summary: "戏剧性的光线、权力肖像与市民生活，把观看引向更强烈的现实感。"
   },
@@ -28,7 +28,7 @@ export const eras = [
     range: "1800–1879",
     start: 1800,
     end: 1879,
-    count: 120,
+    count: 98,
     representative: "great-wave",
     summary: "摄影术诞生，风景、劳动、战争与城市第一次以新的技术和情绪被记录。"
   },
@@ -39,7 +39,7 @@ export const eras = [
     range: "1880–1944",
     start: 1880,
     end: 1944,
-    count: 109,
+    count: 63,
     representative: "hindenburg-disaster",
     summary: "大众媒体、现代主义与全球战争并行，图像开始以前所未有的速度传播。"
   },
@@ -47,10 +47,10 @@ export const eras = [
     id: "contemporary",
     numeral: "V",
     title: "冷战、太空与当代世界",
-    range: "1945–2000",
+    range: "1945–1997",
     start: 1945,
-    end: 2000,
-    count: 36,
+    end: 1997,
+    count: 32,
     representative: "blue-marble-1972",
     summary: "从战后新闻摄影到行星视角，图像把人类命运放到更广阔的空间尺度中。"
   }

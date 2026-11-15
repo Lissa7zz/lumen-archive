@@ -41,19 +41,19 @@ app.innerHTML = `
 
     <main>
       <section class="chrono-hero">
-        <span class="chrono-hero__number" aria-hidden="true">600</span>
+        <span class="chrono-hero__number" aria-hidden="true">563</span>
         <div class="chrono-hero__copy">
           <p class="eyebrow">Interactive Chronology / 时间之河</p>
           <h1>从宫廷之光<br />到全球视野</h1>
           <p>
-            六百年的观看方式被压缩成一面可滚动展墙。亚洲器物、欧洲绘画、非洲雕塑、
-            美洲图像、战争现场与行星视角，在同一条年代轨道上依次展开。
+            五百多年的观看方式被压缩成一面可滚动展墙。亚洲绘画、欧洲版画、
+            美洲摄影、战争现场与行星视角，在同一条年代轨道上依次展开。
           </p>
         </div>
         <div class="chrono-hero__range" aria-label="时间范围">
-          <span data-year-start>1400</span>
+          <span data-year-start>1434</span>
           <div><i></i></div>
-          <span data-year-end>2000</span>
+          <span data-year-end>1997</span>
         </div>
       </section>
 
@@ -63,17 +63,17 @@ app.innerHTML = `
           <h2 id="chrono-title">全部作品，沿时间展开</h2>
         </div>
         <p class="chrono-intro__summary" data-chrono-summary>
-          正在载入 500 件作品
+          正在载入 322 件作品
         </p>
       </section>
 
       <div class="chrono-filterbar">
         <div class="chrono-filters" role="group" aria-label="按媒介筛选时间轴">
           <button class="is-active" type="button" data-chrono-filter="all" aria-pressed="true">
-            全部 <span data-count-all>500</span>
+            全部 <span data-count-all>322</span>
           </button>
           <button type="button" data-chrono-filter="painting" aria-pressed="false">
-            艺术与器物 <span data-count-painting>392</span>
+            绘画与版画 <span data-count-painting>214</span>
           </button>
           <button type="button" data-chrono-filter="photo" aria-pressed="false">
             摄影 <span data-count-photo>108</span>
@@ -104,7 +104,7 @@ app.innerHTML = `
               .join("")}
           </nav>
           <span class="chrono-rail__count">
-            <strong data-current-index>001</strong> / <span data-current-total>500</span>
+            <strong data-current-index>001</strong> / <span data-current-total>322</span>
           </span>
         </aside>
 

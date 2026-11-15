@@ -5,26 +5,22 @@ import { artworks as existingArtworks } from "../src/data/catalog.js";
 const root = path.resolve(import.meta.dirname, "..");
 const outputPath = path.join(root, "src", "data", "world-collection.json");
 const api = "https://openaccess-api.clevelandart.org/api/artworks/";
-const targetCount = 390;
+const targetCount = 212;
 const pageSize = 100;
 const userAgent = "LumenArchive/0.5 (open-source educational art archive)";
 
 const allocations = [
-  ["European Painting and Sculpture", 50],
-  ["Modern European Painting and Sculpture", 25],
-  ["American Painting and Sculpture", 20],
-  ["Photography", 45],
-  ["Chinese Art", 45],
-  ["Japanese Art", 35],
-  ["Korean Art", 12],
-  ["Indian and Southeast Asian Art", 35],
-  ["Islamic Art", 30],
-  ["African Art", 25],
-  ["Art of the Americas", 35],
-  ["Textiles", 10],
-  ["Decorative Art and Design", 8],
-  ["Oceania", 14],
-  ["Oceania", 1, "Australia"]
+  ["European Painting and Sculpture", 30],
+  ["Modern European Painting and Sculpture", 15],
+  ["American Painting and Sculpture", 12],
+  ["Photography", 40],
+  ["Chinese Art", 28],
+  ["Japanese Art", 22],
+  ["Korean Art", 7],
+  ["Indian and Southeast Asian Art", 20],
+  ["Islamic Art", 16],
+  ["African Art", 8],
+  ["Art of the Americas", 14]
 ];
 
 const accents = [
@@ -107,6 +103,12 @@ function imageAspectUsable(item) {
     ratio >= 0.22 &&
     ratio <= 4.5 &&
     Math.max(width, height) >= 1200
+  );
+}
+
+function allowedVisualType(item) {
+  return /photograph|painting|print|drawing|manuscript/i.test(
+    String(item.type || "")
   );
 }
 
@@ -203,6 +205,7 @@ for (const [department, allocation, query = ""] of allocations) {
       return (
         year >= 1400 &&
         year <= 2000 &&
+        allowedVisualType(item) &&
         imageAspectUsable(item) &&
         item.title &&
         !seenIds.has(item.id)
@@ -248,6 +251,7 @@ if (selected.length < targetCount) {
       return (
         year >= 1400 &&
         year <= 2000 &&
+        allowedVisualType(item) &&
         imageAspectUsable(item) &&
         item.title &&
         !seenIds.has(item.id)

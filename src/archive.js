@@ -42,7 +42,7 @@ app.innerHTML = `
 
     <main>
       <section class="archive-hero">
-        <div class="archive-hero__index" data-hero-count aria-hidden="true">500</div>
+        <div class="archive-hero__index" data-hero-count aria-hidden="true">322</div>
         <div class="archive-hero__copy">
           <p class="eyebrow">Complete Collection / 完整典藏</p>
           <h1>五百年视觉档案</h1>
@@ -52,9 +52,9 @@ app.innerHTML = `
           </p>
         </div>
         <dl class="archive-stats">
-          <div><dt>作品</dt><dd data-total-count>500</dd></div>
-          <div><dt>年代跨度</dt><dd><span data-year-span>600</span> 年</dd></div>
-          <div><dt>数据分块</dt><dd data-chunk-count>20</dd></div>
+          <div><dt>作品</dt><dd data-total-count>322</dd></div>
+          <div><dt>年代跨度</dt><dd><span data-year-span>563</span> 年</dd></div>
+          <div><dt>数据分块</dt><dd data-chunk-count>13</dd></div>
         </dl>
       </section>
 

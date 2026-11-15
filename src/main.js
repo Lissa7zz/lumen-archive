@@ -115,11 +115,11 @@ app.innerHTML = `
           </div>
           <div class="section-heading__aside">
             <p class="section-heading__intro">
-              绘画把想象凝固，摄影把现实留下。本期精选 12 件，完整档案已扩充至 500 件。
+              绘画把想象凝固，摄影把现实留下。本期精选 12 件，完整档案已扩充至 322 件。
             </p>
             <a class="archive-entry" href="archive.html">
               <span>查看完整典藏</span>
-              <strong>500 件作品</strong>
+              <strong>322 件作品</strong>
               <i data-lucide="arrow-right" aria-hidden="true"></i>
             </a>
           </div>
@@ -156,12 +156,12 @@ app.innerHTML = `
           </div>
           <div class="timeline-heading__aside">
             <p>
-              从亚洲器物到欧洲绘画，500 件作品分布在五个时代。完整时间轴采用可滚动的年代展墙，
+              从亚洲绘画到欧洲摄影，322 件作品分布在五个时代。完整时间轴采用可滚动的年代展墙，
               不用翻页，也没有横向滑块。
             </p>
             <a class="timeline-entry" href="timeline.html">
               <span>进入完整时间轴</span>
-              <strong>500 件 · 600 年</strong>
+              <strong>322 件 · 563 年</strong>
               <i data-lucide="arrow-right" aria-hidden="true"></i>
             </a>
           </div>
@@ -197,7 +197,7 @@ app.innerHTML = `
         </div>
         <div class="about__copy reveal">
           <p>
-            光迹美术馆是一个开源的非商业艺术索引。当前档案收录 500 件作品，把高清图像、作品信息、创作背景与授权来源放在同一个可检索体系中。
+            光迹美术馆是一个开源的非商业艺术索引。当前档案收录 322 件作品，把高清图像、作品信息、创作背景与授权来源放在同一个可检索体系中。
           </p>
           <p>
             图像均来自 Wikimedia Commons、美国国会图书馆或 NASA 等公共档案，并尽量使用高分辨率版本。代码以 MIT 许可开放，作品图像遵循各自的公共领域或 Creative Commons 许可。
@@ -918,7 +918,7 @@ function updateSearchResults(query) {
       class="search-results__archive"
       href="archive.html${query ? `?q=${encodeURIComponent(query)}` : ""}"
     >
-        <span>${query ? `在完整典藏中搜索“${query}”` : "浏览完整典藏 · 500 件作品"}</span>
+        <span>${query ? `在完整典藏中搜索“${query}”` : "浏览完整典藏 · 322 件作品"}</span>
       <i data-lucide="arrow-right" aria-hidden="true"></i>
     </a>
   `;
