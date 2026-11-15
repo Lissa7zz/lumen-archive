@@ -701,7 +701,28 @@
   }
 
   .archive-header__nav {
-    display: none;
+    position: fixed;
+    z-index: 60;
+    right: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    left: 12px;
+    display: flex;
+    justify-content: space-around;
+    gap: 2px;
+    padding: 8px;
+    background: rgba(17, 18, 15, 0.96);
+    border: 1px solid rgba(245, 242, 233, 0.18);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(16px);
+  }
+
+  .archive-header__nav a {
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+
+  .archive-shell {
+    padding-bottom: 76px;
   }
 
   .archive-hero {

@@ -1,6 +1,8 @@
 {
   "total": 322,
   "curatorial": 12,
+  "minYear": 1434,
+  "maxYear": 1997,
   "yearSpan": 563,
   "pageSize": 12,
   "chunkSize": 25,

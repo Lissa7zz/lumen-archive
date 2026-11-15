@@ -201,6 +201,7 @@ const state = {
   filteredWorks: [],
   filterToken: 0,
   viewerId: null,
+  viewerWorks: [],
   lastFocusedElement: null
 };
 
@@ -217,21 +218,32 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;");
 }
 
-async function fetchJson(url) {
-  const response = await fetch(url);
-  if (!response.ok) throw new Error(`${url} returned ${response.status}`);
-  return response.json();
+async function fetchJson(url, attempt = 0) {
+  try {
+    const response = await fetch(url, {
+      signal: AbortSignal.timeout?.(12000)
+    });
+    if (!response.ok) throw new Error(`${url} returned ${response.status}`);
+    return response.json();
+  } catch (error) {
+    if (attempt >= 2) throw error;
+    await new Promise((resolve) => setTimeout(resolve, 350 * (attempt + 1)));
+    return fetchJson(url, attempt + 1);
+  }
 }
 
 async function loadCatalog() {
   const manifest = await fetchJson("data/manifest.json");
-  const chunkResults = [];
-
-  for (const [index, chunk] of manifest.chunks.entries()) {
-    status.querySelector("p").textContent =
-      `正在载入第 ${index + 1} / ${manifest.chunks.length} 个作品数据块`;
-    chunkResults.push(await fetchJson(chunk.file));
-  }
+  let loadedChunks = 0;
+  const chunkResults = await Promise.all(
+    manifest.chunks.map(async (chunk) => {
+      const data = await fetchJson(chunk.file);
+      loadedChunks += 1;
+      status.querySelector("p").textContent =
+        `已载入 ${loadedChunks} / ${manifest.chunks.length} 个作品数据块`;
+      return data;
+    })
+  );
 
   state.works = chunkResults.flat();
   state.perPage = manifest.pageSize;
@@ -251,7 +263,7 @@ async function loadCatalog() {
   }
 
   readUrlState();
-  applyFilters();
+  await applyFilters();
 
   if (new URLSearchParams(window.location.search).get("work")) {
     const workId = new URLSearchParams(window.location.search).get("work");
@@ -435,19 +447,38 @@ function writeUrlState(totalPages = 1) {
   window.history.replaceState(null, "", url);
 }
 
+function setViewerUrl(workId) {
+  const url = new URL(window.location.href);
+  url.searchParams.set("work", workId);
+  window.history.replaceState(null, "", url);
+}
+
+function clearViewerUrl() {
+  const url = new URL(window.location.href);
+  if (!url.searchParams.has("work")) return;
+  url.searchParams.delete("work");
+  window.history.replaceState(null, "", url);
+}
+
 function openViewer(id) {
-  const index = state.filteredWorks.findIndex((work) => work.id === id);
+  let collection = state.filteredWorks;
+  let index = collection.findIndex((work) => work.id === id);
+  if (index < 0) {
+    collection = state.works;
+    index = collection.findIndex((work) => work.id === id);
+  }
   if (index < 0) return;
-  const work = state.filteredWorks[index];
+  const work = collection[index];
   const wasOpen = viewer.open;
 
   if (!wasOpen) state.lastFocusedElement = document.activeElement;
   state.viewerId = id;
+  state.viewerWorks = collection;
   viewerImage.src = `artworks/${work.slug}-1600.webp`;
   viewerImage.alt = `${work.titleZh}，${work.artist}，${work.displayDate}`;
   viewerFull.href = `artworks/${work.slug}-${work.detailWidth ?? 3200}.webp`;
   document.querySelector("[data-archive-viewer-counter]").textContent =
-    `${String(index + 1).padStart(2, "0")} / ${String(state.filteredWorks.length).padStart(2, "0")}`;
+    `${String(index + 1).padStart(2, "0")} / ${String(collection.length).padStart(2, "0")}`;
   document.querySelector("[data-archive-viewer-source]").href = work.sourcePage;
   document.querySelector("[data-archive-viewer-label]").textContent =
     `${work.medium} · ${work.origin}`;
@@ -463,6 +494,7 @@ function openViewer(id) {
   document.querySelector("[data-archive-viewer-collection]").textContent =
     work.collection;
   document.querySelector("[data-archive-viewer-license]").textContent = work.license;
+  setViewerUrl(work.id);
 
   if (!wasOpen) viewer.showModal();
   document.body.classList.add("is-locked");
@@ -476,12 +508,12 @@ function closeViewer() {
 }
 
 function moveViewer(direction) {
-  const index = state.filteredWorks.findIndex((work) => work.id === state.viewerId);
+  const index = state.viewerWorks.findIndex((work) => work.id === state.viewerId);
   if (index < 0) return;
   const nextIndex =
-    (index + direction + state.filteredWorks.length) %
-    state.filteredWorks.length;
-  openViewer(state.filteredWorks[nextIndex].id);
+    (index + direction + state.viewerWorks.length) %
+    state.viewerWorks.length;
+  openViewer(state.viewerWorks[nextIndex].id);
 }
 
 function changePage(nextPage) {
@@ -536,6 +568,7 @@ document.addEventListener("click", (event) => {
 
 viewer.addEventListener("close", () => {
   document.body.classList.remove("is-locked");
+  clearViewerUrl();
 });
 
 viewer.addEventListener("keydown", (event) => {

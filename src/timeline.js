@@ -13,7 +13,7 @@ import { eras, eraForYear } from "./data/eras.js";
 const app = document.querySelector("#timeline-app");
 
 app.innerHTML = `
-  <div class="chrono-shell">
+  <div class="chrono-shell" id="top">
     <header class="chrono-header">
       <a class="brand" href="./" aria-label="光迹美术馆首页">
         <span class="brand__mark">L/A</span>
@@ -163,10 +163,18 @@ const escapeHtml = (value) =>
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
 
-async function fetchJson(url) {
-  const response = await fetch(url);
-  if (!response.ok) throw new Error(`${url} returned ${response.status}`);
-  return response.json();
+async function fetchJson(url, attempt = 0) {
+  try {
+    const response = await fetch(url, {
+      signal: AbortSignal.timeout?.(12000)
+    });
+    if (!response.ok) throw new Error(`${url} returned ${response.status}`);
+    return response.json();
+  } catch (error) {
+    if (attempt >= 2) throw error;
+    await new Promise((resolve) => setTimeout(resolve, 350 * (attempt + 1)));
+    return fetchJson(url, attempt + 1);
+  }
 }
 
 async function loadTimeline() {
@@ -336,11 +344,22 @@ document.addEventListener("click", (event) => {
       button.setAttribute("aria-pressed", String(active));
     });
     renderStream();
+    window.history.replaceState(
+      null,
+      "",
+      `${window.location.pathname}${window.location.search}`
+    );
+    document.querySelector(".chrono-layout")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
   }
 
   const eraButton = event.target.closest("[data-era-target]");
   if (eraButton) {
-    document.querySelector(`#${eraButton.dataset.eraTarget}`)?.scrollIntoView({
+    const targetId = eraButton.dataset.eraTarget;
+    window.history.replaceState(null, "", `#${targetId}`);
+    document.querySelector(`#${targetId}`)?.scrollIntoView({
       behavior: "smooth",
       block: "start"
     });

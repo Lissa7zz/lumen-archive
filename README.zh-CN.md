@@ -77,6 +77,18 @@ npm run build
 npm run preview
 ```
 
+校验作品数量、数据分块、搜索索引、图片文件、图片可读性和时代统计：
+
+```bash
+npm test
+```
+
+完成生产构建后，可运行浏览器 DOM 交互冒烟测试：
+
+```bash
+npm run test:ui
+```
+
 ## 作品图像
 
 首页策展记录位于 `src/data/artworks.js`，生成后的世界馆藏位于

@@ -115,11 +115,12 @@ app.innerHTML = `
           </div>
           <div class="section-heading__aside">
             <p class="section-heading__intro">
-              绘画把想象凝固，摄影把现实留下。本期精选 12 件，完整档案已扩充至 322 件。
+              绘画把想象凝固，摄影把现实留下。本期精选 12 件，完整档案已扩充至
+              <span data-catalog-total>322</span> 件。
             </p>
             <a class="archive-entry" href="archive.html">
               <span>查看完整典藏</span>
-              <strong>322 件作品</strong>
+              <strong><span data-catalog-total>322</span> 件作品</strong>
               <i data-lucide="arrow-right" aria-hidden="true"></i>
             </a>
           </div>
@@ -156,12 +157,16 @@ app.innerHTML = `
           </div>
           <div class="timeline-heading__aside">
             <p>
-              从亚洲绘画到欧洲摄影，322 件作品分布在五个时代。完整时间轴采用可滚动的年代展墙，
+              从亚洲绘画到欧洲摄影，<span data-catalog-total>322</span>
+              件作品分布在五个时代。完整时间轴采用可滚动的年代展墙，
               不用翻页，也没有横向滑块。
             </p>
             <a class="timeline-entry" href="timeline.html">
               <span>进入完整时间轴</span>
-              <strong>322 件 · 563 年</strong>
+              <strong>
+                <span data-catalog-total>322</span> 件 ·
+                <span data-catalog-year-span>563</span> 年
+              </strong>
               <i data-lucide="arrow-right" aria-hidden="true"></i>
             </a>
           </div>
@@ -197,7 +202,9 @@ app.innerHTML = `
         </div>
         <div class="about__copy reveal">
           <p>
-            光迹美术馆是一个开源的非商业艺术索引。当前档案收录 322 件作品，把高清图像、作品信息、创作背景与授权来源放在同一个可检索体系中。
+            光迹美术馆是一个开源的非商业艺术索引。当前档案收录
+            <span data-catalog-total>322</span>
+            件作品，把高清图像、作品信息、创作背景与授权来源放在同一个可检索体系中。
           </p>
           <p>
             图像均来自 Wikimedia Commons、美国国会图书馆或 NASA 等公共档案，并尽量使用高分辨率版本。代码以 MIT 许可开放，作品图像遵循各自的公共领域或 Creative Commons 许可。
@@ -330,7 +337,14 @@ app.innerHTML = `
     </div>
   </dialog>
 
-  <div class="search-backdrop" data-search-backdrop hidden>
+  <div
+    class="search-backdrop"
+    data-search-backdrop
+    role="dialog"
+    aria-modal="true"
+    aria-label="搜索完整作品目录"
+    hidden
+  >
     <div class="search-panel">
       <label class="search-panel__field">
         <i data-lucide="search" aria-hidden="true"></i>
@@ -344,6 +358,7 @@ app.innerHTML = `
           <i data-lucide="x" aria-hidden="true"></i>
         </button>
       </label>
+      <p class="sr-only" data-search-announcement aria-live="polite"></p>
       <div class="search-results" data-search-results></div>
     </div>
   </div>
@@ -390,16 +405,21 @@ const globalSearch = document.querySelector("[data-search]");
 const searchBackdrop = document.querySelector("[data-search-backdrop]");
 const searchPanelInput = document.querySelector("[data-search-panel-input]");
 const searchResults = document.querySelector("[data-search-results]");
+const searchAnnouncement = document.querySelector("[data-search-announcement]");
 const resultCount = document.querySelector("[data-result-count]");
 const emptyState = document.querySelector("[data-empty-state]");
 const header = document.querySelector("[data-header]");
+const siteShell = document.querySelector(".site-shell");
 
 const state = {
   filter: "all",
   query: "",
+  catalogTotal: 322,
+  catalogYearSpan: 563,
   visibleWorks: [...worksByYear],
   selectedId: worksByYear[0].id,
-  lastFocusedElement: null
+  lastFocusedElement: null,
+  searchReturnFocus: null
 };
 
 const viewerState = {
@@ -414,6 +434,25 @@ const viewerState = {
   loadToken: 0,
   preloads: []
 };
+
+async function hydrateCatalogStats() {
+  try {
+    const response = await fetch("data/manifest.json");
+    if (!response.ok) return;
+    const manifest = await response.json();
+    state.catalogTotal = manifest.total;
+    state.catalogYearSpan = manifest.yearSpan;
+    document.querySelectorAll("[data-catalog-total]").forEach((element) => {
+      element.textContent = manifest.total;
+    });
+    document.querySelectorAll("[data-catalog-year-span]").forEach((element) => {
+      element.textContent = manifest.yearSpan;
+    });
+    updateSearchResults(searchPanelInput.value);
+  } catch {
+    // Static fallback values remain visible if the optional stats request fails.
+  }
+}
 
 function matchesSearch(work, query) {
   const normalizedQuery = query.trim().toLocaleLowerCase("zh-CN");
@@ -882,6 +921,9 @@ function handleViewerDoubleClick(event) {
 
 function updateSearchResults(query) {
   const matches = worksByYear.filter((work) => matchesSearch(work, query)).slice(0, 6);
+  searchAnnouncement.textContent = query
+    ? `${matches.length} 件本期作品匹配当前搜索`
+    : `显示 ${matches.length} 件本期作品`;
   if (!matches.length) {
     searchResults.innerHTML = `
       <p class="search-results__empty">本期精选没有匹配条目</p>
@@ -918,7 +960,7 @@ function updateSearchResults(query) {
       class="search-results__archive"
       href="archive.html${query ? `?q=${encodeURIComponent(query)}` : ""}"
     >
-        <span>${query ? `在完整典藏中搜索“${query}”` : "浏览完整典藏 · 322 件作品"}</span>
+        <span>${query ? `在完整典藏中搜索“${query}”` : `浏览完整典藏 · ${state.catalogTotal} 件作品`}</span>
       <i data-lucide="arrow-right" aria-hidden="true"></i>
     </a>
   `;
@@ -926,16 +968,26 @@ function updateSearchResults(query) {
 }
 
 function openSearch() {
+  if (!searchBackdrop.hidden) return;
+  state.searchReturnFocus = document.activeElement;
+  siteShell.inert = true;
   searchBackdrop.hidden = false;
   document.body.classList.add("is-locked");
-  requestAnimationFrame(() => searchPanelInput.focus());
+  searchPanelInput.focus();
   updateSearchResults(searchPanelInput.value);
 }
 
 function closeSearch() {
   searchBackdrop.hidden = true;
   document.body.classList.remove("is-locked");
-  globalSearch.focus();
+  siteShell.inert = false;
+  const returnTarget = state.searchReturnFocus;
+  state.searchReturnFocus = null;
+  const target =
+    returnTarget instanceof HTMLElement && returnTarget !== document.body
+      ? returnTarget
+      : globalSearch;
+  target.focus();
 }
 
 document.addEventListener("click", (event) => {
@@ -1069,6 +1121,25 @@ window.addEventListener("resize", () => setViewerInfoOpen(viewerInfo.classList.c
 document.addEventListener("keydown", (event) => {
   const isTyping = ["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName);
 
+  if (event.key === "Tab" && !searchBackdrop.hidden) {
+    const focusable = [
+      ...searchBackdrop.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled])'
+      )
+    ];
+    if (focusable.length) {
+      const first = focusable[0];
+      const last = focusable.at(-1);
+      if (event.shiftKey && (document.activeElement === first || !searchBackdrop.contains(document.activeElement))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+  }
+
   if (event.key === "/" && !isTyping && !viewer.open) {
     event.preventDefault();
     openSearch();
@@ -1121,3 +1192,4 @@ if ("requestIdleCallback" in window) {
 
 renderGallery();
 updateSearchResults("");
+hydrateCatalogStats();

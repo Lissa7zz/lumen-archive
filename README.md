@@ -87,6 +87,19 @@ npm run build
 npm run preview
 ```
 
+Validate catalogue counts, chunks, search records, image files, image headers,
+and era totals:
+
+```bash
+npm test
+```
+
+After a production build, run the browser-DOM interaction smoke tests:
+
+```bash
+npm run test:ui
+```
+
 ## Artwork assets
 
 Curated homepage records live in `src/data/artworks.js`; the generated world
